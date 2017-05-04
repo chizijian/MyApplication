@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
+    <RelativeLayout
+        android:id="@+id/leave_message_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/topBarBgColor">
+
+        <TextView
+            android:id="@+id/leave_message_textView"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:text="发布"
+            tools:text="发布" />
+
+        <ImageView
+        android:id="@+id/leave_message_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:src="@mipmap/back"
+        android:contentDescription="" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="发布评论" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/leave_message_edit"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:hint="请填写你对商品的评价"
+            android:inputType="text"
+            android:selectAllOnFocus="false"
+            android:singleLine="false" />
+
+    </RelativeLayout>
+
+</LinearLayout>

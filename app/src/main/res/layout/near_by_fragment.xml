@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/topBarBgColor">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/near_by_address_icon" />
+
+            <TextView
+                android:id="@+id/current_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="@string/str_default_address"
+                android:textColor="@color/colorTitle"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/current_xiaoqu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:entries="@array/xiaoqu"
+                android:gravity="center"
+                android:spinnerMode="dropdown"></Spinner>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/near_by_item_mode"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/near_by_item_list" />
+
+        <ImageView
+            android:id="@+id/near_by_search_imageview"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/near_by_item_mode"
+            android:src="@mipmap/search_icon" />
+    </RelativeLayout>
+       <!-- <android.support.design.widget.TabLayout
+            android:id="@+id/nearby_tablelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/nearby_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>-->
+    <com.yhy.tpg.widget.TpgView
+        android:id="@+id/NearBy_TpgView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"></com.yhy.tpg.widget.TpgView>
+
+    <com.tt.tradein.widget.CustomExpandableListView
+        android:id="@+id/near_by_goods_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:childDivider="#00000000"
+        android:childIndicator="@null"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:focusable="false"
+        android:groupIndicator="@null"
+        android:visibility="gone" />
+
+</LinearLayout>

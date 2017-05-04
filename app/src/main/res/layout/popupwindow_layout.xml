@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/aliceblue">
+    <TextView
+        android:id="@+id/secondhand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:selectAllOnFocus="true"
+        android:text="@string/secondhand"
+        android:textColor="@color/light_black_color"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/qiugou"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:text="@string/qiugou"
+        android:textColor="@color/light_black_color"
+        android:textSize="25dp"
+        android:layout_gravity="right" />
+</LinearLayout>

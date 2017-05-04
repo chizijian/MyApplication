@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bmob_pay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    >
+    <RelativeLayout
+        android:id="@+id/bmob_pay_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/topBarBgColor">
+
+        <ImageView
+            android:id="@+id/pay_goods_detail_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/back"
+            android:contentDescription="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/goods_deatil" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/pay_linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@id/bmob_pay_top"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pay_goods_detail_image_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="5dp"></android.support.v7.widget.RecyclerView>
+        <!--<com.tt.tradein.widget.HorizontalListView
+        android:id="@+id/goods_detail_image_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+    </com.tt.tradein.widget.HorizontalListView>-->
+        <TextView
+            android:id="@+id/pay_goods_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/pay_goods_detail_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorBg"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pay_goods_detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/pay_goods_detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorBg"></View>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/pay_goods_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:hint="收货地址"/>
+
+        </RelativeLayout>
+        <RadioGroup
+            android:id="@+id/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/alipay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="支付宝" />
+
+            <RadioButton
+                android:id="@+id/wxpay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:text="微信" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/go"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="支付宝支付" />
+
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/pay_linearLayout" >
+
+        <TextView
+            android:id="@+id/pay_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+</RelativeLayout>
