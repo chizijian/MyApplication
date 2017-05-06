@@ -1,7 +1,6 @@
 package com.tt.tradein.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,38 +8,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.tt.tradein.R;
-import com.tt.tradein.app.MyApp;
-import com.tt.tradein.di.component.AppComponent;
-import com.tt.tradein.di.component.DaggerMainActivityComponent;
-import com.tt.tradein.di.modules.MainActivityModule;
-import com.tt.tradein.mvp.models.Goods;
-import com.tt.tradein.mvp.models.User;
-import com.tt.tradein.mvp.presenter.NearByPresenter;
-import com.tt.tradein.mvp.views.NearByView;
-import com.tt.tradein.ui.activity.GoodsDetailActivity;
 import com.tt.tradein.ui.activity.SearchActivity;
-import com.tt.tradein.ui.adapter.ExpandableListViewAdapter;
 import com.tt.tradein.ui.adapter.MyFragmentPagerAdapter;
-import com.tt.tradein.ui.fragment.base.BaseFragment;
 import com.tt.tradein.utils.UIUtils;
 import com.tt.tradein.widget.CustomExpandableListView;
 import com.yhy.tpg.widget.TpgView;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +29,7 @@ import butterknife.Unbinder;
 /**
  * Created by czj on 2016/4/6 0006.
  */
-public class NearByFragment extends Fragment implements NearByView {
+public class NearByFragment extends Fragment{
     /**
      * The constant TAG.
      */
@@ -103,22 +81,9 @@ public class NearByFragment extends Fragment implements NearByView {
     /**
      * The My listener.
      */
-    public MyLocationListenner myListener = new MyLocationListenner();
-    private MyLocationConfiguration.LocationMode mCurrentMode;
-    //private String mCurrentPrince = "武汉";
-    private String mCurrentPrince = "南湖";
-    private ExpandableListViewAdapter adapter;
+   //public MyLocationListenner myListener = new MyLocationListenner();
 
     private MyFragmentPagerAdapter fragmentAdapter;
-    private List<Goods> goodses;
-
-    private BaseFragment baseFragment;
-    /**
-     * The Presenter.
-     */
-    @Inject
-    NearByPresenter presenter;
-    private View view;
 
     @Override
     public void onAttach(Context context) {
@@ -140,8 +105,6 @@ public class NearByFragment extends Fragment implements NearByView {
      * Init data.
      */
     public void initData() {
-        setupComponent(((MyApp) mContext.getApplicationContext()).getAppComponent());
-
         fragmentAdapter=new MyFragmentPagerAdapter(getFragmentManager(),this);
         mNearByTpgView.setAdapter(fragmentAdapter);
         mNearByTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -163,28 +126,16 @@ public class NearByFragment extends Fragment implements NearByView {
 
             }
         });
-        initBaiduLocation();
+        //initBaiduLocation();
 
 
     }
 
-    /**
-     * Sets component.
-     *
-     * @param appComponent the app component
-     */
-    protected void setupComponent(AppComponent appComponent) {
-        DaggerMainActivityComponent.builder()
-                .appComponent(appComponent)
-                .mainActivityModule(new MainActivityModule(this))
-                .build()
-                .inject(this);
-    }
 
     /**
      * Init baidu location.
      */
-    public void initBaiduLocation() {
+   /* public void initBaiduLocation() {
         // 定位初始化
         mLocClient = new LocationClient(mContext);
         mLocClient.registerLocationListener(myListener);
@@ -195,13 +146,13 @@ public class NearByFragment extends Fragment implements NearByView {
         option.setIsNeedAddress(true);  //开启位置信息包括city
         mLocClient.setLocOption(option);
         mLocClient.start();
-    }
+    }*/
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             Log.e("REFRESH", " shuaxinshuju");
-            presenter.loadGoodsInfor(mContext,mCurrentXiaoqu.getSelectedItem().toString(), false);
+            initData();
         }
         super.onHiddenChanged(hidden);
     }
@@ -233,96 +184,46 @@ public class NearByFragment extends Fragment implements NearByView {
     @OnItemSelected(R.id.current_xiaoqu)
     void onItemSelected() {
         Log.e(TAG, "onItemSelected: " + mCurrentXiaoqu.getSelectedItem().toString());
-        if(mCurrentXiaoqu.getSelectedItem().toString().equals("请选择") ){
-            //.setSelection(1);
-            return;
+        if (!mCurrentXiaoqu.getSelectedItem().toString().equals("请选择")) {
+            if(fragmentAdapter!=null)
+                fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
         }
-        else if(fragmentAdapter!=null)
-            fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
-    }
-
-    @Override
-    public void parseUser(final List<User> users, final List<Goods> goods) {
-        adapter = new ExpandableListViewAdapter(mContext, goods, users);
-        mNearByGoodsList.setAdapter(adapter);
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
-            mNearByGoodsList.expandGroup(i);
-        }
-        mNearByGoodsList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Toast.makeText(mContext, "" + goods.get(groupPosition).getPrice(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Goods", goods.get(groupPosition));
-                bundle.putSerializable("User", users.get(groupPosition));
-                intent.putExtras(bundle);
-                startActivity(intent);
-                return true;
-            }
-        });
-        mNearByGoodsList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(mContext, "" + goods.get(groupPosition).getPrice(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Goods", goods.get(groupPosition));
-                bundle.putSerializable("User", users.get(groupPosition));
-                intent.putExtras(bundle);
-                startActivity(intent);
-                return true;
-            }
-        });
-    }
-
-    @Override
-    public void onLoadGoodsInforSuccess(List<Goods> goods) {
-        this.goodses = goods;
-        presenter.parseGoodsUser(mContext, goods);
-    }
-
-    @Override
-    public void onLoadGoodsError(String str) {
-
     }
 
     /**
      * 定位SDK监听函数
-     */
-    public class MyLocationListenner implements BDLocationListener {
+     *//*
+    private class MyLocationListenner implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            StringBuffer sb = new StringBuffer(256);
+            StringBuilder sb = new StringBuilder(256);
 
             if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
+            } else {
+                if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
+                } else {
+                    if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
 
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
-                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+                    } else {
+                        if (location.getLocType() == BDLocation.TypeServerError) {
+                            sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
+                        } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+                            sb.append("网络不同导致定位失败，请检查网络是否通畅");
+                        } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+                            sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+                        }
+                    }
+                }
             }
             mCurrentAddress.setText(location.getAddrStr());
             mCurrentAddress.postInvalidate();
             //mCurrentPrince = location.getCity();
-            mCurrentPrince = mCurrentXiaoqu.getSelectedItem().toString();
+            String mCurrentPrince = mCurrentXiaoqu.getSelectedItem().toString();
             presenter.loadGoodsInfor(mContext, mCurrentPrince, false);
         }
 
-        /**
-         * On receive poi.
-         *
-         * @param poiLocation the poi location
-         */
-        public void onReceivePoi(BDLocation poiLocation) {
-
-        }
-    }
+    }*/
 
     @Override
     public void onDestroy() {
