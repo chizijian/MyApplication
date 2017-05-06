@@ -13,6 +13,10 @@ import com.yhy.tpg.pager.TpgFragment;
  */
 
 public class MyFragmentPagerAdapter extends TpgAdapter {
+    @Override
+    public void reloadDataForCurrentPager(Object... args) {
+        super.reloadDataForCurrentPager(args);
+    }
 
     private static final String[] Titles={"二手","求购"};
     private Fragment fragment;

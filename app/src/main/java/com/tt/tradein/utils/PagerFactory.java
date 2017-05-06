@@ -15,8 +15,10 @@ public class PagerFactory {
         switch (position){
             case 0:
                 pager=((NearByFragment)fragment).getSecondFrangment();
+                break;
             case 1:
                 pager=((NearByFragment)fragment).getQiugouFragment();
+                break;
         }
         return pager;
     }

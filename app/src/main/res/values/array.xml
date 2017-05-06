@@ -2,6 +2,7 @@
 <resources>
     <!-- 校区分类 -->
     <string-array name="xiaoqu">
+        <item>请选择</item>
         <item>南湖</item>
         <item>升升</item>
         <item>鉴湖</item>

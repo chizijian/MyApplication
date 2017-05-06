@@ -16,6 +16,7 @@ public class TakePhotoUtil {
     /**
      * 使用LruCache来缓存图片
      */
+    static RequestQueue queue;
     private static class BitmapCache implements ImageLoader.ImageCache {
 
         private LruCache<String, Bitmap> mCache;
@@ -48,7 +49,8 @@ public class TakePhotoUtil {
     }
 
     public static ImageLoader getmImageLoader(Context context) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        if(queue==null)
+                queue = Volley.newRequestQueue(context);
         return new ImageLoader(queue, new BitmapCache());
     }
 }

@@ -3,6 +3,7 @@ package com.tt.tradein.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.tt.tradein.ui.activity.GoodsDetailActivity;
 import com.tt.tradein.ui.activity.SearchActivity;
 import com.tt.tradein.ui.adapter.ExpandableListViewAdapter;
 import com.tt.tradein.ui.adapter.MyFragmentPagerAdapter;
+import com.tt.tradein.ui.fragment.base.BaseFragment;
 import com.tt.tradein.utils.UIUtils;
 import com.tt.tradein.widget.CustomExpandableListView;
 import com.yhy.tpg.widget.TpgView;
@@ -110,7 +112,7 @@ public class NearByFragment extends Fragment implements NearByView {
     private MyFragmentPagerAdapter fragmentAdapter;
     private List<Goods> goodses;
 
-    private String mCurrentXiqoqu;
+    private BaseFragment baseFragment;
     /**
      * The Presenter.
      */
@@ -139,12 +141,31 @@ public class NearByFragment extends Fragment implements NearByView {
      */
     public void initData() {
         setupComponent(((MyApp) mContext.getApplicationContext()).getAppComponent());
-       // fragmentAdapter = new MyFragmentPagerAdapter(this.getFragmentManager(), mContext, this);
-     /*   mNearbyViewPager.setAdapter(fragmentAdapter);
-        mNearbyTablelayout.setupWithViewPager(mNearbyViewPager);
-        mNearbyTablelayout.getTabAt(0).select();*/
-        mNearByGoodsList.setFocusable(false);
+
+        fragmentAdapter=new MyFragmentPagerAdapter(getFragmentManager(),this);
+        mNearByTpgView.setAdapter(fragmentAdapter);
+        mNearByTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
+        mNearByTpgView.setTabMode(TabLayout.MODE_FIXED);
+        mNearByTpgView.setTabIndicatorHeight(2);
+        mNearByTpgView.setOnPageChangedListener(new TpgView.OnPageChangedListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                fragmentAdapter.getItem(position).reloadDate(mCurrentXiaoqu.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         initBaiduLocation();
+
+
     }
 
     /**
@@ -180,7 +201,7 @@ public class NearByFragment extends Fragment implements NearByView {
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             Log.e("REFRESH", " shuaxinshuju");
-            presenter.loadGoodsInfor(mContext, mCurrentPrince, false);
+            presenter.loadGoodsInfor(mContext,mCurrentXiaoqu.getSelectedItem().toString(), false);
         }
         super.onHiddenChanged(hidden);
     }
@@ -197,7 +218,7 @@ public class NearByFragment extends Fragment implements NearByView {
      *
      * @param view the view
      */
-    @OnClick({R.id.near_by_item_mode, R.id.near_by_search_imageview, R.id.nearby_tablelayout, R.id.nearby_viewPager, R.id.NearBy_TpgView})
+    @OnClick({R.id.near_by_item_mode, R.id.near_by_search_imageview})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.near_by_item_mode:
@@ -206,25 +227,18 @@ public class NearByFragment extends Fragment implements NearByView {
             case R.id.near_by_search_imageview:
                 UIUtils.nextPage(mContext, SearchActivity.class);
                 break;
-            case R.id.nearby_tablelayout:
-                break;
-            case R.id.nearby_viewPager:
-                break;
-            case R.id.NearBy_TpgView:
-                break;
         }
     }
 
     @OnItemSelected(R.id.current_xiaoqu)
-    void onItemSelected(int position) {
+    void onItemSelected() {
         Log.e(TAG, "onItemSelected: " + mCurrentXiaoqu.getSelectedItem().toString());
-        mCurrentXiqoqu = mCurrentXiaoqu.getSelectedItem().toString();
-       /* if (mNearbyTablelayout != null && fragmentAdapter != null)
-            if (mNearbyTablelayout.getSelectedTabPosition() == 0) {
-                NearBySecondHandFrangment fragment = (NearBySecondHandFrangment) fragmentAdapter.getItem(mNearbyTablelayout.getSelectedTabPosition());
-                if (fragment != null)
-                    fragment.Refresh(mCurrentXiqoqu, mContext);
-            }*/
+        if(mCurrentXiaoqu.getSelectedItem().toString().equals("请选择") ){
+            //.setSelection(1);
+            return;
+        }
+        else if(fragmentAdapter!=null)
+            fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
     }
 
     @Override
@@ -321,6 +335,6 @@ public class NearByFragment extends Fragment implements NearByView {
     }
 
     public NearByQiuGouFragment getQiugouFragment() {
-        return NearByQiuGouFragment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
+       return NearByQiuGouFragment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
     }
 }

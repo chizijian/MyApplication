@@ -193,12 +193,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         parentHolder.mPriceTextView.setText("￥" + goods.get(groupPosition).getPrice());
         if (!users.isEmpty())
             if (users.get(groupPosition).getPhoto() != null) {
-             //   Log.e(TAG, "getGroupView: user="+users.get(groupPosition).getUsername()+"   photo="+users.get(groupPosition).getPhoto().getFilename());
+                //Log.e(TAG, "getGroupView: user="+users.get(groupPosition).getUsername()+"   photo="+users.get(groupPosition).getPhoto().getFilename());
                 parentHolder.mUserPhotoImageView.setDefaultImageResId(R.mipmap.icon_photo);
                 parentHolder.mUserPhotoImageView.setImageUrl(users.get(groupPosition).getPhoto()
                         .getUrl(), TakePhotoUtil.getmImageLoader(context));
             } else {
-             //   Log.e(TAG, "getGroupView: user="+users.get(groupPosition).getUsername());
+               //Log.e(TAG, "getGroupView: user="+users.get(groupPosition).getUsername());
                 parentHolder.mUserPhotoImageView.setImageResource(R.mipmap.icon_photo);
             }
         else {

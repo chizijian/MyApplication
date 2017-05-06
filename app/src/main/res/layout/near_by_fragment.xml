@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -71,8 +72,11 @@
             android:layout_height="match_parent"></android.support.v4.view.ViewPager>-->
     <com.yhy.tpg.widget.TpgView
         android:id="@+id/NearBy_TpgView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"></com.yhy.tpg.widget.TpgView>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:expand_visible="gone"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
 
     <com.tt.tradein.widget.CustomExpandableListView
         android:id="@+id/near_by_goods_list"
