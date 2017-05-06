@@ -65,10 +65,6 @@ public class NearByFragment extends Fragment{
     CustomExpandableListView mNearByGoodsList;
     @BindView(R.id.NearBy_TpgView)
     TpgView mNearByTpgView;
-  /*  @BindView(R.id.nearby_tablelayout)
-    android.support.design.widget.TabLayout mNearbyTablelayout;
-    @BindView(R.id.nearby_viewPager)
-    ViewPager mNearbyViewPager;*/
 
 
     private Context mContext;
@@ -152,7 +148,7 @@ public class NearByFragment extends Fragment{
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             Log.e("REFRESH", " shuaxinshuju");
-            initData();
+           // initData();
         }
         super.onHiddenChanged(hidden);
     }
