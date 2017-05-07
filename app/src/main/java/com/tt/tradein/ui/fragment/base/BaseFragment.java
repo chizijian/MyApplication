@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tt.tradein.R;
@@ -36,6 +38,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -46,23 +49,17 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
 
     @BindView(R.id.near_by_goods_list)
     CustomExpandableListView mNearByGoodsList;
+    @BindView(R.id.goods_empty_textview)
+    TextView mGoodsEmptyTextview;
+    @BindView(R.id.scrollView)
+    ScrollView mScrollView;
     private View view;
     private Unbinder unbinder;
 
     @Inject
     NearByPresenter presenter;
 
-    private static final String BASE_FRAGMENT_TYPE = "BASE_FRAGMENT_TYPE";
-
     private Context mContext;
-
-    public String getmCurrentXiaoqu() {
-        return mCurrentXiaoqu;
-    }
-
-    public void setmCurrentXiaoqu(String mCurrentXiaoqu) {
-        this.mCurrentXiaoqu = mCurrentXiaoqu;
-    }
 
     private final ThreadLocal<List<Goods>> second_goodses = new ThreadLocal<>();
     private final ThreadLocal<List<User>> second_userses = new ThreadLocal<>();
@@ -75,10 +72,6 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
     public abstract boolean IsQiuGou();//传递货物状态
 
     public abstract String getXiqoqu();
-
-    private String mCurrentXiaoqu;
-
-    private final String TAG = "BaseFrament";
 
     @Override
     public void onAttach(Context context) {
@@ -140,6 +133,7 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
     @Override
     public void onLoadGoodsError(String str) {
         mHandler.sendErrorHandler();
+        String TAG = "BaseFrament";
         Log.e(TAG, "onLoadGoodsError: " + str);
     }
 
@@ -199,6 +193,16 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
         }
     };
 
+    @OnClick({R.id.goods_empty_textview, R.id.scrollView})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.goods_empty_textview:
+                break;
+            case R.id.scrollView:
+                break;
+        }
+    }
+
     private class MyGoodsListGroupListener implements ExpandableListView.OnGroupClickListener {
         private List<Goods> goodses = new ArrayList<>();
         private List<User> userses = new ArrayList<>();
@@ -257,14 +261,19 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
     }
 
     private void initHomeList(List<Goods> goodses, List<User> userses) {
-        adapter.set(new ExpandableListViewAdapter(mContext, goodses, userses));
-        mNearByGoodsList.setAdapter(adapter.get());
-        adapter.get().notifyDataSetChanged();
-        for (int i = 0; i < adapter.get().getGroupCount(); i++) {
-            mNearByGoodsList.collapseGroup(i);
-            mNearByGoodsList.expandGroup(i);
+        if (goodses.isEmpty() || userses.isEmpty()) {
+            mScrollView.setVisibility(View.GONE);
+            mGoodsEmptyTextview.setVisibility(View.VISIBLE);
+        }else {
+            adapter.set(new ExpandableListViewAdapter(mContext, goodses, userses));
+            mNearByGoodsList.setAdapter(adapter.get());
+            adapter.get().notifyDataSetChanged();
+            for (int i = 0; i < adapter.get().getGroupCount(); i++) {
+                mNearByGoodsList.collapseGroup(i);
+                mNearByGoodsList.expandGroup(i);
+            }
+            mNearByGoodsList.setOnGroupClickListener(new MyGoodsListGroupListener(goodses, userses));
+            mNearByGoodsList.setOnChildClickListener(new MyGoodsListChildListener(goodses, userses));
         }
-        mNearByGoodsList.setOnGroupClickListener(new MyGoodsListGroupListener(goodses, userses));
-        mNearByGoodsList.setOnChildClickListener(new MyGoodsListChildListener(goodses, userses));
     }
 }

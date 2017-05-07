@@ -233,8 +233,6 @@ public class GoodsDetailActivity extends BaseActivity {
         goodsDetailPrice.setText(mGoods.getPrice());
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-        //gridViewAdapter = new GridViewAdapter(mGoods.getImages(),this);
-        //gridView.setAdapter(gridViewAdapter);
         gridView.setLayoutManager(layoutManager);
         gridView.setAdapter(new RecyclerViewAdapter(this, mGoods.getImages()));
 
@@ -258,10 +256,10 @@ public class GoodsDetailActivity extends BaseActivity {
                         .color(R.color.albumback).size(8)
                         .build());
                 messagelist.setAdapter(mAdapter);
-                for (Message m : list
+                /*for (Message m : list
                         ) {
                     Log.e(TAG, "onSuccess: " + m.getMessage());
-                }
+                }*/
             }
 
             @Override

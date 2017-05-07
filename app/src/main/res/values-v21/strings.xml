@@ -3,4 +3,14 @@
     <string name="action_settings">设置</string>
     <string name="goods_deatil">商品详情</string>
     <string name="buy_rightnow">立即购买</string>
+    <string name="xiaoqu">校区</string>
+    <string name="publish">发布</string>
+    <string name="publish_goods">发布商品</string>
+    <string name="goods_title">商品主题</string>
+    <string name="describe_your_goods">描述一下商品吧...</string>
+    <string name="goods_price">商品价格</string>
+    <string name="goods_kind">商品分类</string>
+    <string name="new_degree">新旧程度</string>
+    <string name="goods_mount">商品数量</string>
+    <string name="goods_location">位置</string>
 </resources>

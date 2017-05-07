@@ -12,12 +12,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.baidu.location.LocationClient;
 import com.tt.tradein.R;
 import com.tt.tradein.ui.activity.SearchActivity;
 import com.tt.tradein.ui.adapter.MyFragmentPagerAdapter;
 import com.tt.tradein.utils.UIUtils;
-import com.tt.tradein.widget.CustomExpandableListView;
 import com.yhy.tpg.widget.TpgView;
 
 import butterknife.BindView;
@@ -29,7 +27,7 @@ import butterknife.Unbinder;
 /**
  * Created by czj on 2016/4/6 0006.
  */
-public class NearByFragment extends Fragment{
+public class NearByFragment extends Fragment {
     /**
      * The constant TAG.
      */
@@ -58,26 +56,23 @@ public class NearByFragment extends Fragment{
 
     @BindView(R.id.current_xiaoqu)
     Spinner mCurrentXiaoqu;
-    /**
-     * The M near by goods list.
-     */
-    @BindView(R.id.near_by_goods_list)
-    CustomExpandableListView mNearByGoodsList;
+
     @BindView(R.id.NearBy_TpgView)
     TpgView mNearByTpgView;
 
 
     private Context mContext;
     private View mRootView = null;
+    private boolean isSpinnerFirst = true;
     /**
      * The M loc client.
      */
 // 定位相关
-    LocationClient mLocClient;
+    // LocationClient mLocClient;
     /**
      * The My listener.
      */
-   //public MyLocationListenner myListener = new MyLocationListenner();
+    //public MyLocationListenner myListener = new MyLocationListenner();
 
     private MyFragmentPagerAdapter fragmentAdapter;
 
@@ -101,11 +96,11 @@ public class NearByFragment extends Fragment{
      * Init data.
      */
     public void initData() {
-        fragmentAdapter=new MyFragmentPagerAdapter(getFragmentManager(),this);
+        fragmentAdapter = new MyFragmentPagerAdapter(getFragmentManager(), this);
         mNearByTpgView.setAdapter(fragmentAdapter);
         mNearByTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
         mNearByTpgView.setTabMode(TabLayout.MODE_FIXED);
-        mNearByTpgView.setTabIndicatorHeight(2);
+        mNearByTpgView.setTabIndicatorHeight(1);
         mNearByTpgView.setOnPageChangedListener(new TpgView.OnPageChangedListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -143,19 +138,18 @@ public class NearByFragment extends Fragment{
         mLocClient.setLocOption(option);
         mLocClient.start();
     }*/
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             Log.e("REFRESH", " shuaxinshuju");
-           // initData();
+            // initData();
         }
         super.onHiddenChanged(hidden);
     }
 
     @Override
     public void onDestroyView() {
-        mLocClient.stop();
+        //mLocClient.stop();
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -180,10 +174,7 @@ public class NearByFragment extends Fragment{
     @OnItemSelected(R.id.current_xiaoqu)
     void onItemSelected() {
         Log.e(TAG, "onItemSelected: " + mCurrentXiaoqu.getSelectedItem().toString());
-        if (!mCurrentXiaoqu.getSelectedItem().toString().equals("请选择")) {
-            if(fragmentAdapter!=null)
-                fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
-        }
+        fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
     }
 
     /**
@@ -220,7 +211,6 @@ public class NearByFragment extends Fragment{
         }
 
     }*/
-
     @Override
     public void onDestroy() {
         // 退出时销毁定位
@@ -232,6 +222,6 @@ public class NearByFragment extends Fragment{
     }
 
     public NearByQiuGouFragment getQiugouFragment() {
-       return NearByQiuGouFragment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
+        return NearByQiuGouFragment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
     }
 }

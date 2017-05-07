@@ -21,7 +21,8 @@
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/near_by_address_icon" />
+                android:src="@mipmap/near_by_address_icon"
+                android:contentDescription="@string/xiaoqu" />
 
             <TextView
                 android:id="@+id/current_address"
@@ -40,7 +41,7 @@
                 android:layout_gravity="center_vertical"
                 android:entries="@array/xiaoqu"
                 android:gravity="center"
-                android:spinnerMode="dropdown"></Spinner>
+                android:spinnerMode="dropdown" />
         </LinearLayout>
 
         <ImageView
@@ -50,7 +51,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:src="@mipmap/near_by_item_list" />
+            android:src="@mipmap/near_by_item_list"
+            android:contentDescription="@string/kind_sort" />
 
         <ImageView
             android:id="@+id/near_by_search_imageview"
@@ -59,7 +61,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@id/near_by_item_mode"
-            android:src="@mipmap/search_icon" />
+            android:src="@mipmap/search_icon"
+            android:contentDescription="@string/str_search_hint" />
     </RelativeLayout>
        <!-- <android.support.design.widget.TabLayout
             android:id="@+id/nearby_tablelayout"
@@ -77,20 +80,5 @@
         app:expand_visible="gone"
         app:tabGravity="fill"
         app:tabMode="fixed" />
-
-    <com.tt.tradein.widget.CustomExpandableListView
-        android:id="@+id/near_by_goods_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:childDivider="#00000000"
-        android:childIndicator="@null"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:focusable="false"
-        android:groupIndicator="@null"
-        android:visibility="gone" />
 
 </LinearLayout>
