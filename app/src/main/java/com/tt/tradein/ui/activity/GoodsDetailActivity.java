@@ -1,6 +1,5 @@
 package com.tt.tradein.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -167,6 +166,9 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     boolean isFavor = false;
 
+    /**
+     * The Dot list.
+     */
     @BindViews({R.id.goods_details_dot_one,R.id.goods_details_dot_two,R.id.goods_details_dot_three,R.id.goods_details_dot_four,R.id.goods_details_dot_five,R.id.goods_details_dot_six,R.id.goods_details_dot_seven,R.id.goods_details_dot_eight,R.id.goods_details_dot_nine})
     List<View> DotList;//圆点指示器
 
@@ -285,21 +287,23 @@ public class GoodsDetailActivity extends BaseActivity {
                 add2favor();
                 break;
             case R.id.imageView_talk:
-                Intent intent = new Intent(this, LeaveMessageActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Goods", mGoods);
                 bundle.putSerializable("User", mUsers);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                UIUtils.nextPage(this,LeaveMessageActivity.class,bundle);
                 break;
             case R.id.textView_Buy:
                 if (buy.getText().toString().equals("立即购买")) {
-                    Intent intentbuy = new Intent(this, BmobPayActivity.class);
                     Bundle bundlebuy = new Bundle();
                     bundlebuy.putSerializable("Goods", mGoods);
                     bundlebuy.putSerializable("User", mUsers);
-                    intentbuy.putExtras(bundlebuy);
-                    startActivity(intentbuy);
+                    UIUtils.nextPage(this,BmobPayActivity.class,bundlebuy);
+                }
+                else {
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("source","qiugou_seller");
+                    bundle2.putSerializable("Goods", mGoods);
+                    UIUtils.nextPage(this,PublishGoodsActivity.class,bundle2);
                 }
                 break;
         }
@@ -309,7 +313,7 @@ public class GoodsDetailActivity extends BaseActivity {
 
         User user = BmobUser.getCurrentUser(GoodsDetailActivity.this, User.class);
         if (user == null) {
-            Toast.makeText(GoodsDetailActivity.this, "请先登录", Toast.LENGTH_LONG);
+            Toast.makeText(GoodsDetailActivity.this, "请先登录", Toast.LENGTH_LONG).show();
             UIUtils.nextPage(this, LoginActivity.class);
             return;
         }

@@ -85,7 +85,7 @@ dependencies {
 
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
 
-    compile 'com.yhy:tpg:1.0.1'
+    compile 'com.yhy:tpg:1.0.3'
 
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/SocialSDK_Sina.jar')

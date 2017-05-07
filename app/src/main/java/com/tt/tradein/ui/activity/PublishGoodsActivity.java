@@ -50,6 +50,7 @@ import com.tt.tradein.app.MyApp;
 import com.tt.tradein.di.component.AppComponent;
 import com.tt.tradein.di.component.DaggerPublishActivityComponent;
 import com.tt.tradein.di.modules.PublishActivityModule;
+import com.tt.tradein.mvp.models.Goods;
 import com.tt.tradein.mvp.presenter.PublishActivityPresenter;
 import com.tt.tradein.mvp.views.PublishView;
 import com.tt.tradein.photogallery.util.Bimp;
@@ -182,12 +183,18 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
     private String kind, secondkind;
     private static final int TAKE_PICTURE = 1;
     private boolean qiugou = false;
-    private String xiaoqu;
+
+
+    private String source = null;//发布商品或回复求购
+    private Goods qiugou_goods;
+
+    private String xiaoqu;//校区
+
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
 
-    private final int MAX_SELECT = 9;
-    private int HAS_SELECT = 0;
+    private final int MAX_SELECT = 9;//照片最大选择数
+    private int HAS_SELECT = 0;//已选择图片数
 
     @Override
     public int getContentViewId() {
@@ -227,7 +234,11 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
     void onClick(View v) {
         switch (v.getId()) {
             case R.id.kind:
-                processChooseKind();
+                if (ToolsUtils.isNullOrEmpty(source))
+                  processChooseKind();//选择分类
+                else {
+                    ToastUtil.showToast(getApplicationContext(),"不可修改分类");
+                }
                 break;
         }
     }
@@ -254,8 +265,21 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
     @Override
     public void initData() {
 
-        qiugou = getIntent().getExtras().getBoolean("type");
+        Bundle bundle = getIntent().getExtras();
 
+        if (bundle != null) {
+            qiugou = bundle.containsKey("type") && bundle.getBoolean("type");
+            if (bundle.containsKey("source") && bundle.containsKey("Goods")) {
+                source = bundle.getString("source");
+                qiugou_goods = (Goods) getIntent().getSerializableExtra("Goods");
+
+                kind = qiugou_goods.getKind();
+                secondkind = qiugou_goods.getSecondkind();
+                mGoodsKindText.setText(kind + "  " + secondkind);
+
+                //Log.e(TAG, "initData: source=" + source);
+            }
+        }
         View view = getLayoutInflater().inflate(R.layout.item_popupwindows, null);
         ll_popup = ButterKnife.findById(view, R.id.ll_popup);
         pop.setWidth(LayoutParams.MATCH_PARENT);
@@ -334,7 +358,7 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
                                     long arg3) {
                 if (arg2 == Bimp.tempSelectBitmap.size()) {
                     ll_popup.startAnimation(AnimationUtils.loadAnimation(PublishGoodsActivity.this, R.anim.activity_translate_in));
-                    pop.showAtLocation(LayoutInflater.from(PublishGoodsActivity.this).inflate(R.layout.activity_selectimg,null), Gravity.CENTER, 0, 0);
+                    pop.showAtLocation(LayoutInflater.from(PublishGoodsActivity.this).inflate(R.layout.activity_selectimg, null), Gravity.CENTER, 0, 0);
                 } else {
                     Toast.makeText(PublishGoodsActivity.this, Bimp.tempSelectBitmap.get(arg2).imagePath, Toast.LENGTH_LONG).show();
                 }
@@ -362,6 +386,7 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
      * Process publish.
      */
     public void processPublish() {
+
         if (ToolsUtils.isNullOrEmpty(mGoodsTitle.getText().toString())) {
             Toast.makeText(PublishGoodsActivity.this, "主题不能为空", Toast.LENGTH_LONG).show();
             return;
@@ -459,15 +484,17 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
                 }
                 break;
             case GlobalDefineValues.CHOOSE_KIND:
-                if (data == null) {
-                    return;
-                } else {
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        kind = extras.getString(GlobalDefineValues.GOODS_KIND);
-                        secondkind = extras.getString(GlobalDefineValues.GOODS_SECOND_KIND);
-                        Log.e("kind", kind + "  " + secondkind);
-                        mGoodsKindText.setText(kind + "  " + secondkind);
+                if (ToolsUtils.isNullOrEmpty(source)) {
+                    if (data == null) {
+                        return;
+                    } else {
+                        Bundle extras = data.getExtras();
+                        if (extras != null) {
+                            kind = extras.getString(GlobalDefineValues.GOODS_KIND);
+                            secondkind = extras.getString(GlobalDefineValues.GOODS_SECOND_KIND);
+                            Log.e("kind", kind + "  " + secondkind);
+                            mGoodsKindText.setText(kind + "  " + secondkind);
+                        }
                     }
                 }
                 break;
@@ -577,9 +604,9 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
            /* mCurrentLocation = location.getAddrStr();
             mCurrentPrince = location.getCity();
             mGoodsLocation.setText(mCurrentLocation);*/
-           ToastUtil.showToast(PublishGoodsActivity.this,sb.toString());
+            ToastUtil.showToast(PublishGoodsActivity.this, sb.toString());
             mGoodsLocation.setText("武汉市洪山区");
-            mCurrentPrince="武汉市";
+            mCurrentPrince = "武汉市";
             mGoodsLocation.postInvalidate();
         }
 
@@ -605,7 +632,7 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.handlePermissionsResult(this, type, invokeParam, this);
