@@ -50,7 +50,7 @@ public class ToolsUtils {
      * 邮件格式
      *
      * @param email the email
-     * @return boolean
+     * @return boolean boolean
      */
     public static boolean isValidEmail(String email) {
         Pattern p = Pattern
@@ -64,7 +64,7 @@ public class ToolsUtils {
      * 用户名匹配
      *
      * @param name the name
-     * @return boolean
+     * @return boolean boolean
      */
     public static boolean isCorrectUserName(String name) {
         Pattern p = Pattern.compile("([A-Za-z0-9]){2,10}");
@@ -77,7 +77,7 @@ public class ToolsUtils {
      * 密码匹配，以字母开头，长度 在6-18之间，只能包含字符、数字和下划线。
      *
      * @param pwd the pwd
-     * @return boolean
+     * @return boolean boolean
      */
     public static boolean isCorrectUserPwd(String pwd) {
         Pattern p = Pattern.compile("\\w{6,18}");
@@ -217,6 +217,12 @@ public class ToolsUtils {
         return true;
     }
 
+    /**
+     * Cheak age boolean.
+     *
+     * @param age the age
+     * @return the boolean
+     */
     public static boolean cheakAge(String age){
         Pattern p = Pattern.compile("^(?:[1-9][0-9]?|1[01][0-9]|120)$");
         Matcher m = p.matcher((age));

@@ -879,6 +879,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     /**
      * Scroll to the provided offset  @param x the x
+     *
+     * @param x the x
      */
     public void scrollTo(int x) {
         mFlingTracker.startScroll(mNextX, 0, x - mNextX, 0);
@@ -1347,6 +1349,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         /**
          * Sets the friction for the provided scroller  @param scroller the scroller
          *
+         * @param scroller the scroller
          * @param friction the friction
          */
         public static void setFriction(Scroller scroller, float friction) {
@@ -1368,6 +1371,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         /**
          * Gets the velocity for the provided scroller  @param scroller the scroller
          *
+         * @param scroller the scroller
          * @return the curr velocity
          */
         public static float getCurrVelocity(Scroller scroller) {

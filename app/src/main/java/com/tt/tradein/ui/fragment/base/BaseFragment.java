@@ -44,18 +44,29 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/5/03/0003.
  */
-
 public abstract class BaseFragment extends TpgFragment implements NearByView {
 
+    /**
+     * The M near by goods list.
+     */
     @BindView(R.id.near_by_goods_list)
     CustomExpandableListView mNearByGoodsList;
+    /**
+     * The M goods empty textview.
+     */
     @BindView(R.id.goods_empty_textview)
     TextView mGoodsEmptyTextview;
+    /**
+     * The M scroll view.
+     */
     @BindView(R.id.scrollView)
     ScrollView mScrollView;
     private View view;
     private Unbinder unbinder;
 
+    /**
+     * The Presenter.
+     */
     @Inject
     NearByPresenter presenter;
 
@@ -69,8 +80,18 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
     private boolean isFirstCreated = true;
     private ResultHandler mHandler;
 
+    /**
+     * Is qiu gou boolean.
+     *
+     * @return the boolean
+     */
     public abstract boolean IsQiuGou();//传递货物状态
 
+    /**
+     * Gets xiqoqu.
+     *
+     * @return the xiqoqu
+     */
     public abstract String getXiqoqu();
 
     @Override
@@ -132,7 +153,8 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
 
     @Override
     public void onLoadGoodsError(String str) {
-        mHandler.sendErrorHandler();
+        if(mHandler!=null)
+         mHandler.sendErrorHandler();
         String TAG = "BaseFrament";
         Log.e(TAG, "onLoadGoodsError: " + str);
     }
@@ -154,6 +176,11 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
         return true;
     }
 
+    /**
+     * Sets component.
+     *
+     * @param appComponent the app component
+     */
     protected void setupComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)
@@ -193,6 +220,11 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
         }
     };
 
+    /**
+     * On click.
+     *
+     * @param v the v
+     */
     @OnClick({R.id.goods_empty_textview, R.id.scrollView})
     public void onClick(View v) {
         switch (v.getId()) {
@@ -264,7 +296,10 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
         if (goodses.isEmpty() || userses.isEmpty()) {
             mScrollView.setVisibility(View.GONE);
             mGoodsEmptyTextview.setVisibility(View.VISIBLE);
-        }else {
+        } else {
+            mScrollView.setVisibility(View.VISIBLE);
+            mGoodsEmptyTextview.setVisibility(View.GONE);
+
             adapter.set(new ExpandableListViewAdapter(mContext, goodses, userses));
             mNearByGoodsList.setAdapter(adapter.get());
             adapter.get().notifyDataSetChanged();

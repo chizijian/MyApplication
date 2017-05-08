@@ -11,7 +11,6 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by Administrator on 2017/5/02/0002.
  */
-
 public class TakePhotoUtil {
     /**
      * 使用LruCache来缓存图片
@@ -48,6 +47,12 @@ public class TakePhotoUtil {
 
     }
 
+    /**
+     * Gets image loader.
+     *
+     * @param context the context
+     * @return the image loader
+     */
     public static ImageLoader getmImageLoader(Context context) {
         if(queue==null)
                 queue = Volley.newRequestQueue(context);

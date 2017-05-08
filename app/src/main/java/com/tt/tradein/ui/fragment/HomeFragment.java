@@ -125,6 +125,9 @@ public class HomeFragment extends Fragment implements HomeView {
     @BindView(R.id.qiugou_text)
     TextView qiugou_text;
 
+    /**
+     * The Dot list.
+     */
     @BindViews({R.id.dot_one,R.id.dot_two,R.id.dot_three,R.id.dot_four})
     List<View> DotList;
 

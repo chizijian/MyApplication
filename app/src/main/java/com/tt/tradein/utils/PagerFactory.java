@@ -8,8 +8,14 @@ import com.yhy.tpg.pager.TpgFragment;
 /**
  * Created by Administrator on 2017/5/03/0003.
  */
-
 public class PagerFactory {
+    /**
+     * Create tpg fragment.
+     *
+     * @param position the position
+     * @param fragment the fragment
+     * @return the tpg fragment
+     */
     public static TpgFragment create(int position, Fragment fragment) {
         TpgFragment pager = null;
         switch (position){

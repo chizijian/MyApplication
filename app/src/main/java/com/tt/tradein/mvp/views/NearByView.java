@@ -26,7 +26,8 @@ public interface NearByView {
     /**
      * Parse user.
      *
-     * @param users the users
+     * @param users   the users
+     * @param goodses the goodses
      */
     void parseUser(List<User> users,List<Goods> goodses);
 }

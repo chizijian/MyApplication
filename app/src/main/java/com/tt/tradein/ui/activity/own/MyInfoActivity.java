@@ -140,9 +140,15 @@ public class MyInfoActivity extends BaseActivity {
     @BindView(R.id.info_bu)
     Button info_bu;
 
+    /**
+     * The Xiaoqu array.
+     */
     @BindArray(R.array.xiaoqu)
     String[] xiaoquArray;
 
+    /**
+     * The Sex array.
+     */
     @BindArray(R.array.sex)
     String[] sexArray;
 

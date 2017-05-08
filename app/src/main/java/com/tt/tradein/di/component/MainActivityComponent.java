@@ -48,8 +48,18 @@ public interface MainActivityComponent {
     void inject(KindSortFragment kindSortFragment);
 
 
+    /**
+     * Inject.
+     *
+     * @param nearBySecondHandFrangment the near by second hand frangment
+     */
     void inject(NearBySecondHandFrangment nearBySecondHandFrangment);
 
+    /**
+     * Inject.
+     *
+     * @param baseFragment the base fragment
+     */
     void inject(BaseFragment baseFragment);
 
     /**

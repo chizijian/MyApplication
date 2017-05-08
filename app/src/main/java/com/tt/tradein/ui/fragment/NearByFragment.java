@@ -54,9 +54,15 @@ public class NearByFragment extends Fragment {
     @BindView(R.id.current_address)
     TextView mCurrentAddress;
 
+    /**
+     * The M current xiaoqu.
+     */
     @BindView(R.id.current_xiaoqu)
     Spinner mCurrentXiaoqu;
 
+    /**
+     * The M near by tpg view.
+     */
     @BindView(R.id.NearBy_TpgView)
     TpgView mNearByTpgView;
 
@@ -171,6 +177,9 @@ public class NearByFragment extends Fragment {
         }
     }
 
+    /**
+     * On item selected.
+     */
     @OnItemSelected(R.id.current_xiaoqu)
     void onItemSelected() {
         Log.e(TAG, "onItemSelected: " + mCurrentXiaoqu.getSelectedItem().toString());
@@ -217,10 +226,20 @@ public class NearByFragment extends Fragment {
         super.onDestroy();
     }
 
+    /**
+     * Gets second frangment.
+     *
+     * @return the second frangment
+     */
     public NearBySecondHandFrangment getSecondFrangment() {
         return NearBySecondHandFrangment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
     }
 
+    /**
+     * Gets qiugou fragment.
+     *
+     * @return the qiugou fragment
+     */
     public NearByQiuGouFragment getQiugouFragment() {
         return NearByQiuGouFragment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
     }

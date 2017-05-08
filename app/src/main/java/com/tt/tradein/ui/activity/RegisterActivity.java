@@ -134,6 +134,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @BindArray(R.array.sex)
     String[] sexList;
 
+    /**
+     * The Linear layout list.
+     */
     @BindViews({R.id.activity_register_input_username_ll,
             R.id.activity_register_sex_ll, R.id.activity_register_xiaoqu_ll,
             R.id.activity_register_age_ll, R.id.activity_register_confirm_input_ll})

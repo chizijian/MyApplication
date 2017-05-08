@@ -31,14 +31,24 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Created by Administrator on 2017/5/02/0002.
  */
-
 public class ChangePhotoUtil {
     private  Context mContext;
 
+    /**
+     * Gets activity.
+     *
+     * @return the activity
+     */
     public Activity getActivity() {
         return activity;
     }
 
+    /**
+     * Sets activity.
+     *
+     * @param activity the activity
+     * @return the activity
+     */
     public ChangePhotoUtil setActivity(Activity activity) {
         this.activity = activity;
         return this;
@@ -51,34 +61,69 @@ public class ChangePhotoUtil {
 
     private CircleImageView  mPersonCenterPhoto;
 
+    /**
+     * Instantiates a new Change photo util.
+     *
+     * @param mContext           the m context
+     * @param activity           the activity
+     * @param mPersonCenterPhoto the m person center photo
+     */
     public ChangePhotoUtil(Context mContext, Activity activity, CircleImageView mPersonCenterPhoto) {
         this.mContext = mContext;
         this.activity = activity;
         this.mPersonCenterPhoto = mPersonCenterPhoto;
     }
 
+    /**
+     * Gets context.
+     *
+     * @return the context
+     */
     public Context getmContext() {
         return mContext;
     }
 
+    /**
+     * Sets context.
+     *
+     * @param mContext the m context
+     * @return the context
+     */
     public ChangePhotoUtil setmContext(Context mContext) {
         this.mContext = mContext;
         return this;
     }
 
+    /**
+     * Gets person center photo.
+     *
+     * @return the person center photo
+     */
     public CircleImageView getmPersonCenterPhoto() {
         return mPersonCenterPhoto;
     }
 
+    /**
+     * Sets person center photo.
+     *
+     * @param mPersonCenterPhoto the m person center photo
+     * @return the person center photo
+     */
     public ChangePhotoUtil setmPersonCenterPhoto(CircleImageView mPersonCenterPhoto) {
         this.mPersonCenterPhoto = mPersonCenterPhoto;
         return this;
     }
 
+    /**
+     * Instantiates a new Change photo util.
+     */
     public ChangePhotoUtil() {
     }
 
-    /*设置头像*/
+    /**
+     * Show type dialog.
+     */
+/*设置头像*/
     public void showTypeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         final AlertDialog dialog = builder.create();
@@ -117,7 +162,14 @@ public class ChangePhotoUtil {
         });
     }
 
-    //@Override
+    /**
+     * On activity result.
+     *
+     * @param requestCode the request code
+     * @param resultCode  the result code
+     * @param data        the data
+     */
+//@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case TAKE_PICTURE:

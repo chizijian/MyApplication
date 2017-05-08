@@ -19,7 +19,6 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/5/03/0003.
  */
-
 public class NearBySecondHandFrangment extends BaseFragment{
 
     private final String TAG = "NearBySecondFrangment";
@@ -39,6 +38,9 @@ public class NearBySecondHandFrangment extends BaseFragment{
     private final ThreadLocal<ExpandableListViewAdapter> adapter = new ThreadLocal<>();
 
     private boolean isFirstCreated = true;
+    /**
+     * The Presenter.
+     */
     @Inject
     NearByPresenter presenter;
 
@@ -49,6 +51,12 @@ public class NearBySecondHandFrangment extends BaseFragment{
     return super.shouldLoadDataAtFirst();
     }
 
+    /**
+     * New instance near by second hand frangment.
+     *
+     * @param type the type
+     * @return the near by second hand frangment
+     */
     public static NearBySecondHandFrangment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString(BASE_FRAGMENT_TYPE, type);

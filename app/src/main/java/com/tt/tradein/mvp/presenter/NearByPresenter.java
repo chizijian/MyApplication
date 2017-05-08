@@ -15,6 +15,7 @@ public interface NearByPresenter {
      *
      * @param context the context
      * @param city    the city
+     * @param qiugou  the qiugou
      */
     void loadGoodsInfor(Context context,String city,boolean qiugou);
 

@@ -20,7 +20,7 @@ public class TimeUtils {
      * 服务端给的时间，经常会以.0结尾，所以去除之
      *
      * @param datetime the datetime
-     * @return string
+     * @return string string
      */
     public static String RemoveLastZero(String datetime) {
 		if (TextUtils.isEmpty(datetime))
@@ -38,7 +38,7 @@ public class TimeUtils {
      * 将yyyy-MM-dd HH:mm:ss格式的时间，与当前时间相比，时间差转换为口头上的术语，如几天几小时几分几�?
      *
      * @param datetime the datetime
-     * @return string
+     * @return string string
      */
     public static String convert_between(String datetime) {
 		try {
@@ -55,7 +55,7 @@ public class TimeUtils {
      *
      * @param starttime the starttime
      * @param endtime   the endtime
-     * @return string
+     * @return string string
      */
     public static String convert_between(String starttime, String endtime) {
 		try {
@@ -72,7 +72,7 @@ public class TimeUtils {
      * 将时长秒，转换为口头上的术语，如几天几小时几分几�? 1天：86400s 1时：3600s 1分：60s
      *
      * @param sec 相差的间隔，单位为秒
-     * @return string
+     * @return string string
      */
     public static String convert_between(long sec) {
 		if (sec < 0)
@@ -104,7 +104,7 @@ public class TimeUtils {
      * 将时长秒，转换为几分几秒，�?�用于�?�话时长之类的，�?2'30''
      *
      * @param sec the sec
-     * @return string
+     * @return string string
      */
     public static String convert_between_len(long sec) {
 		if (sec < 0)
@@ -128,7 +128,7 @@ public class TimeUtils {
      * 将EEE MMM dd HH:mm:ss zzz yyyy格式的时间，同当前时间相比，格式化为：xx分钟前，xx小时前和日期
      *
      * @param datetime the datetime
-     * @return string
+     * @return string string
      */
     public static String convert_before_timezone(String datetime) {
 		Log.v("info", datetime);
@@ -148,7 +148,7 @@ public class TimeUtils {
      * 将yyyy-MM-dd HH:mm:ss格式的时间，同当前时间比对，格式化为：xx分钟前，xx小时前和日期
      *
      * @param datetime �?比对的时�?
-     * @return string
+     * @return string string
      */
     public static String convert_before(String datetime) {
 		if (TextUtils.isEmpty(datetime)) {
@@ -168,7 +168,7 @@ public class TimeUtils {
      * 将对比后的时间，格式化为：xx分钟前，xx小时前和日期
      *
      * @param time �?比对的时�?
-     * @return string
+     * @return string string
      */
     public static String convert_before(long time) {
 		if (time < 0)
@@ -214,7 +214,7 @@ public class TimeUtils {
      * @param sDate     �?始日期，yyyy-MM-dd hh:mm:ss
      * @param eDate     结束时间，yyyy-MM-dd hh:mm:ss
      * @param checkTime �?查时间，yyyy-MM-dd hh:mm:ss
-     * @return boolean
+     * @return boolean boolean
      */
     public static boolean timeCompare(String sDate, String eDate, String checkTime) {
 		try {
@@ -236,7 +236,7 @@ public class TimeUtils {
      *
      * @param sDate �?始日期，hh:mm
      * @param eDate 结束时间，hh:mm
-     * @return boolean
+     * @return boolean boolean
      */
     public static boolean timeCompa(String sDate, String eDate) {
 		try {
@@ -259,7 +259,7 @@ public class TimeUtils {
      *
      * @param sDate �?始日期，yyyy-MM-dd hh:mm:ss
      * @param eDate 结束时间，yyyy-MM-dd hh:mm:ss
-     * @return boolean
+     * @return boolean boolean
      */
     public static boolean timeCompare(String sDate, String eDate) {
 		try {
@@ -280,7 +280,7 @@ public class TimeUtils {
      *
      * @param date 时间
      * @param sec  秒数，正数为添加秒，负数是减少秒
-     * @return string
+     * @return string string
      */
     public static String addSec(String date, int sec) {
 		try {
