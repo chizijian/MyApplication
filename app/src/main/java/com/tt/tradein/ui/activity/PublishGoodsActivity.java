@@ -186,8 +186,9 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
 
 
     private String source = null;//发布商品或回复求购
-    private Goods qiugou_goods;
-
+    private Goods qiugou_goods;//求购的商品
+    private Boolean is_qiugou_seller=false;//是否为求购商品回复
+    private String qiugou_goods_id=null;//求购商品id
     private String xiaoqu;//校区
 
     private TakePhoto takePhoto;
@@ -272,6 +273,8 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
             if (bundle.containsKey("source") && bundle.containsKey("Goods")) {
                 source = bundle.getString("source");
                 qiugou_goods = (Goods) getIntent().getSerializableExtra("Goods");
+                qiugou_goods_id=qiugou_goods.getObjectId();
+                is_qiugou_seller=true;
 
                 kind = qiugou_goods.getKind();
                 secondkind = qiugou_goods.getSecondkind();
@@ -434,7 +437,7 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
         presenter.publishGoods(this, mGoodsTitle.getText().toString(),
                 mGoodsDescription.getText().toString(), images, kind, secondkind,
                 mGoodsPrice.getText().toString(), mGoodsNewDegree.getText().toString(),
-                mCurrentLocation, mCurrentPrince, qiugou, xiaoqu);
+                mCurrentLocation, mCurrentPrince, qiugou, xiaoqu,is_qiugou_seller,qiugou_goods_id);
     }
 
     @Override

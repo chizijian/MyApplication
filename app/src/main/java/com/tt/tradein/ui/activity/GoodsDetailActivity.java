@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,9 +20,11 @@ import com.tt.tradein.mvp.models.Message;
 import com.tt.tradein.mvp.models.User;
 import com.tt.tradein.ui.activity.BmobPay.BmobPayActivity;
 import com.tt.tradein.ui.activity.base.BaseActivity;
+import com.tt.tradein.ui.adapter.ExpandableListViewAdapter;
 import com.tt.tradein.ui.adapter.MessageAdapter;
 import com.tt.tradein.ui.adapter.RecyclerViewAdapter;
 import com.tt.tradein.utils.UIUtils;
+import com.tt.tradein.widget.CustomExpandableListView;
 import com.tt.tradein.widget.ImageFlipper;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -83,6 +86,9 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     @BindView(R.id.message_List)
     RecyclerView messagelist;
+
+    @BindView(R.id.qiugou_seller_list)
+    CustomExpandableListView mQiugouSellerList;
     /**
      * The Img favor.
      */
@@ -98,11 +104,6 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     @BindView(R.id.textView_Buy)
     TextView buy;
-    /**
-     * The M goods text 3.
-     */
-    @BindView(R.id.goods_text3)
-    TextView mGoodsText3;
     /**
      * The M goods details dot one.
      */
@@ -190,6 +191,8 @@ public class GoodsDetailActivity extends BaseActivity {
         if (mGoods.isQiugou()) {
             buy.setText("立即卖出");
         }
+
+        /*收藏按钮*/
         BmobQuery<Goods> query = new BmobQuery<>();
         User user = BmobUser.getCurrentUser(GoodsDetailActivity.this, User.class);
         if (user == null) {
@@ -215,7 +218,10 @@ public class GoodsDetailActivity extends BaseActivity {
                 isFavor = false;
             }
         });
+        /*圆点指示器*/
         initDotList();
+
+        /*加载图片*/
         List<ImageView> imageViews = new ArrayList<>();
         for (String path : mGoods.getImages()
                 ) {
@@ -229,6 +235,7 @@ public class GoodsDetailActivity extends BaseActivity {
             imageViews.add(imageView);
         }
         showBannerData(imageViews);
+
         goodsDetailTitle.setText(mGoods.getTitle());
         goodsDetailDescription.setText(mGoods.getDescription());
         goodsDetailLocation.setText(mGoods.getLocation());
@@ -238,37 +245,11 @@ public class GoodsDetailActivity extends BaseActivity {
         gridView.setLayoutManager(layoutManager);
         gridView.setAdapter(new RecyclerViewAdapter(this, mGoods.getImages()));
 
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        layoutManager2.setReverseLayout(true);
-        messagelist.setLayoutManager(layoutManager2);
-        //messagelist.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
-
-        messagelist.setHasFixedSize(true);
-        messagelist.setNestedScrollingEnabled(false);
-        BmobQuery<Message> messageBmobQuery = new BmobQuery<>();
-        messageBmobQuery.addWhereEqualTo("Message_Goodsid", mGoods.getObjectId());
-        messageBmobQuery.findObjects(this, new FindListener<Message>() {
-            @Override
-            public void onSuccess(List<Message> list) {
-                Log.e(TAG, "onSuccess: 加载评论成功");
-                MessageAdapter mAdapter = new MessageAdapter(R.layout.message_item, list, GoodsDetailActivity.this);
-                mAdapter.openLoadAnimation();
-
-                messagelist.addItemDecoration(new HorizontalDividerItemDecoration.Builder(GoodsDetailActivity.this)
-                        .color(R.color.albumback).size(8)
-                        .build());
-                messagelist.setAdapter(mAdapter);
-                /*for (Message m : list
-                        ) {
-                    Log.e(TAG, "onSuccess: " + m.getMessage());
-                }*/
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
-            }
-        });
+        if(!mGoods.isQiugou())
+            ShowSecondHandGoodsMessage();//加载二手货物评论
+        else{
+            ShowQiuGouGoodsMessage();
+        }
 
     }
 
@@ -383,7 +364,7 @@ public class GoodsDetailActivity extends BaseActivity {
      *
      * @param images the images
      */
-    public void showBannerData(List<ImageView> images) {
+    private void showBannerData(List<ImageView> images) {
         if (images.size() <= 1) {
             mImageFliper.stopFlipping();
             //mImageFliper.stopNestedScroll();
@@ -400,4 +381,95 @@ public class GoodsDetailActivity extends BaseActivity {
 
     }
 
+    private void ShowSecondHandGoodsMessage(){
+
+        mQiugouSellerList.setVisibility(View.GONE);
+        messagelist.setVisibility(View.VISIBLE);
+
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager2.setReverseLayout(true);
+        messagelist.setLayoutManager(layoutManager2);
+
+        messagelist.setHasFixedSize(true);
+        messagelist.setNestedScrollingEnabled(false);
+
+        BmobQuery<Message> messageBmobQuery = new BmobQuery<>();
+        messageBmobQuery.addWhereEqualTo("Message_Goodsid", mGoods.getObjectId());
+        messageBmobQuery.findObjects(this, new FindListener<Message>() {
+            @Override
+            public void onSuccess(List<Message> list) {
+                Log.e(TAG, "onSuccess: 加载评论成功");
+                MessageAdapter mAdapter = new MessageAdapter(R.layout.message_item, list, GoodsDetailActivity.this);
+                mAdapter.openLoadAnimation();
+
+                messagelist.addItemDecoration(new HorizontalDividerItemDecoration.Builder(GoodsDetailActivity.this)
+                        .color(R.color.albumback).size(8)
+                        .build());
+                messagelist.setAdapter(mAdapter);
+                /*for (Message m : list
+                        ) {
+                    Log.e(TAG, "onSuccess: " + m.getMessage());
+                }*/
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Log.e(TAG, "onError: "+s );
+            }
+        });
+    }
+    
+    private void ShowQiuGouGoodsMessage(){
+       mQiugouSellerList.setVisibility(View.VISIBLE);
+        messagelist.setVisibility(View.GONE);
+
+       BmobQuery<Goods> query=new BmobQuery<>();
+        query.addWhereEqualTo("is_qiugou_seller",true);
+        query.addWhereEqualTo("qiugou_goods_id",mGoods.getObjectId());
+        query.include("user");
+        query.findObjects(getApplicationContext(), new FindListener<Goods>() {
+            @Override
+            public void onSuccess(final List<Goods> list) {
+                final List<User> users=new ArrayList<>();
+                for (Goods goods:list
+                     ) {
+                    users.add(goods.getUser());
+                    //Log.e(TAG, "onSuccess: "+"goods="+goods.getObjectId()+"  user="+goods.getUser().getObjectId());
+                }
+               // Log.e(TAG, "onSuccess: "+"获取求购回复列表成功" );
+                ExpandableListViewAdapter adapter=new ExpandableListViewAdapter(GoodsDetailActivity.this,list,users);
+                mQiugouSellerList.setAdapter(adapter);
+                for (int i=0;i<adapter.getGroupCount();i++){
+                    mQiugouSellerList.collapseGroup(i);
+                    mQiugouSellerList.expandGroup(i);
+                }
+                mQiugouSellerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                    @Override
+                    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Goods", list.get(groupPosition));
+                        bundle.putSerializable("User", users.get(groupPosition));
+                        UIUtils.nextPage(GoodsDetailActivity.this,GoodsDetailActivity.class,bundle);
+                        return true;
+                    }
+                });
+
+                mQiugouSellerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    @Override
+                    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Goods", list.get(groupPosition));
+                        bundle.putSerializable("User", users.get(groupPosition));
+                        UIUtils.nextPage(GoodsDetailActivity.this,GoodsDetailActivity.class,bundle);
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Log.e(TAG, "onError: "+s );
+            }
+        });
+    }
 }

@@ -25,7 +25,9 @@ public interface PublishActivityPresenter {
      * @param xiaoqu      the xiaoqu
      * @return the boolean
      */
-    public boolean publishGoods(Context context,String title,String description,List<String> images,String kind,String secondKind,String price,String newDegree,String location,String prince,boolean qiugou,String xiaoqu);
+    public boolean publishGoods(Context context,String title,String description,List<String> images,
+                                String kind,String secondKind,String price, String newDegree,String location,
+                                String prince,boolean qiugou,String xiaoqu,boolean is_qiugou_seller,String qiugou_goods_id);
 
     /**
      * Upload picture boolean.

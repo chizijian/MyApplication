@@ -239,7 +239,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Goods", goods.get(groupPosition));
                 bundle.putSerializable("User", users.get(groupPosition));
-                UIUtils.nextPage(getContext(),GoodsDetailActivity.class,bundle);
+                UIUtils.nextPage(context,GoodsDetailActivity.class,bundle);
             }
         });
         childHolder.horizontalListView.setAdapter(horizontalListAdapter);

@@ -19,6 +19,25 @@ public class Goods extends BmobObject {
     private String kind;
     private String secondkind;
 
+    public Boolean getIs_qiugou_seller() {
+        return is_qiugou_seller;
+    }
+
+    public void setIs_qiugou_seller(Boolean is_qiugou_seller) {
+        this.is_qiugou_seller = is_qiugou_seller;
+    }
+
+    public String getQiugou_goods_id() {
+        return qiugou_goods_id;
+    }
+
+    public void setQiugou_goods_id(String qiugou_goods_id) {
+        this.qiugou_goods_id = qiugou_goods_id;
+    }
+
+    private Boolean is_qiugou_seller;
+    private String qiugou_goods_id;
+
     /**
      * Gets xiaoqu.
      *
