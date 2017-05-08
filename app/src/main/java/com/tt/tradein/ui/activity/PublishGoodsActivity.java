@@ -437,7 +437,7 @@ public class PublishGoodsActivity extends BaseActivity implements PublishView, T
         presenter.publishGoods(this, mGoodsTitle.getText().toString(),
                 mGoodsDescription.getText().toString(), images, kind, secondkind,
                 mGoodsPrice.getText().toString(), mGoodsNewDegree.getText().toString(),
-                mCurrentLocation, mCurrentPrince, qiugou, xiaoqu,is_qiugou_seller,qiugou_goods_id);
+                mCurrentLocation, mCurrentPrince, qiugou, xiaoqu,is_qiugou_seller,qiugou_goods_id,false);
     }
 
     @Override

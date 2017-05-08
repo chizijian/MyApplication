@@ -8,9 +8,9 @@ import cn.bmob.v3.BmobObject;
  * Created by czj on 16-5-12.
  */
 public class Goods extends BmobObject {
-    private String title;
-    private String description;
-    private String new_degree;
+    private String title;//主题
+    private String description;//描述
+    private String new_degree;//新旧程度
     private String price;
     private String location;
     private String mount;
@@ -18,6 +18,16 @@ public class Goods extends BmobObject {
     private String prince;
     private String kind;
     private String secondkind;
+
+    public boolean isOff_shelve() {
+        return off_shelve;
+    }
+
+    public void setOff_shelve(boolean off_shelve) {
+        this.off_shelve = off_shelve;
+    }
+
+    private boolean off_shelve;
 
     public Boolean getIs_qiugou_seller() {
         return is_qiugou_seller;
@@ -76,7 +86,7 @@ public class Goods extends BmobObject {
         this.qiugou = qiugou;
     }
 
-    private  boolean qiugou;
+    private boolean qiugou;
 
     /**
      * Gets user.
@@ -298,7 +308,7 @@ public class Goods extends BmobObject {
         this.images = images;
     }
 
-    public boolean equals(Object obj){
-        return (this.getObjectId().equals(((Goods)obj).getObjectId()));
+    public boolean equals(Object obj) {
+        return (this.getObjectId().equals(((Goods) obj).getObjectId()));
     }
 }

@@ -27,7 +27,7 @@ public interface PublishActivityPresenter {
      */
     public boolean publishGoods(Context context,String title,String description,List<String> images,
                                 String kind,String secondKind,String price, String newDegree,String location,
-                                String prince,boolean qiugou,String xiaoqu,boolean is_qiugou_seller,String qiugou_goods_id);
+                                String prince,boolean qiugou,String xiaoqu,boolean is_qiugou_seller,String qiugou_goods_id,boolean off_shelve);
 
     /**
      * Upload picture boolean.

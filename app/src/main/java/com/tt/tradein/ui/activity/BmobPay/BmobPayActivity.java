@@ -392,6 +392,18 @@ public class BmobPayActivity extends BaseActivity implements RadioGroup.OnChecke
             @Override
             public void succeed() {
                 Toast.makeText(BmobPayActivity.this, "支付成功!", Toast.LENGTH_SHORT).show();
+                mGoods.setOff_shelve(true );
+                mGoods.update(BmobPayActivity.this, new UpdateListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.e(TAG, "onSuccess: " );
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        Log.e(TAG, "onFailure: "+s );
+                    }
+                });
                 mPay_tv.append(name + "'s pay status is success\n\n");
                 order.setIsSuccess("支付成功");
                 saveOrder();

@@ -159,6 +159,7 @@ public class HomeViewPresenterImpl implements HomeViewPresenter {
         BmobQuery<Goods> query = new BmobQuery<Goods>();
         query.order("-createdAt");
         query.addWhereEqualTo("qiugou", qiugou);
+        query.addWhereEqualTo("off_shelve",false);
         query.include("user");
         query.findObjects(context, new FindListener<Goods>() {
             @Override

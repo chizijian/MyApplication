@@ -41,6 +41,7 @@ public class NearByPresenterImpl implements NearByPresenter {
         //query.addWhereEqualTo("prince",city);
         query.addWhereEqualTo("xiaoqu",city);
         query.addWhereEqualTo("qiugou",qiugou);
+        query.addWhereEqualTo("off_shelve",false);
         query.include("user");
         query.order("-createdAt");
         query.findObjects(context, new FindListener<Goods>() {

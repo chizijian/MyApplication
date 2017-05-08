@@ -33,7 +33,7 @@ public class PublishActivityPresenterImpl implements PublishActivityPresenter {
     public boolean publishGoods(Context context, String title, String description,
                                 List<String> images, String kind, String secondkind, String price,
                                 String newDegree, String location, String prince, boolean qiugou, String xiaoqu,
-                                boolean is_qiugou_seller, String qiugou_goods_id) {
+                                boolean is_qiugou_seller, String qiugou_goods_id,boolean off_shelve) {
         Goods goods = new Goods();
         User user = BmobUser.getCurrentUser(context, User.class);
         goods.setUserid(user.getObjectId());
@@ -51,6 +51,7 @@ public class PublishActivityPresenterImpl implements PublishActivityPresenter {
         goods.setXiaoqu(xiaoqu);
         goods.setIs_qiugou_seller(is_qiugou_seller);
         goods.setQiugou_goods_id(qiugou_goods_id);
+        goods.setOff_shelve(off_shelve);
         goods.save(context, new SaveListener() {
 
             @Override
