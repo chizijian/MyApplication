@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/topBarBgColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/publish_goods"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/qiugou_seller"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="@string/publish"
+            android:textColor="@drawable/text_while"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/qiugou_seller_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorWhite"
+        android:hint="@string/goods_title" />
+
+    <EditText
+        android:id="@+id/qiugou_seller_word_message"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorWhite"
+        android:gravity="left|top"
+        android:hint="@string/describe_your_goods" />
+
+    <GridView
+        android:id="@+id/qiugou_seller_noScrollgridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/colorWhite"
+        android:horizontalSpacing="5dp"
+        android:numColumns="5"
+        android:scrollbars="none"
+        android:verticalSpacing="5dp" />
+
+    <EditText
+        android:id="@+id/qiugou_seller_price"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorWhite"
+        android:hint="@string/goods_price" />
+
+    <RelativeLayout
+        android:id="@+id/qiugou_seller_kind"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="@string/goods_kind"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/qiugou_seller_goods_kind_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/qiugou_seller_new_degree"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorWhite"
+        android:hint="@string/new_degree" />
+
+    <EditText
+        android:id="@+id/qiugou_seller_mount"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorWhite"
+        android:hint="@string/goods_mount" />
+
+    <TextView
+        android:id="@+id/qiugou_seller_location"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:hint="@string/goods_location"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/qiugou_seller_publish_xiaoqu"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:drawingCacheQuality="high"
+        android:entries="@array/xiaoqu"
+        android:gravity="center_vertical"
+        android:hint="@string/xiaoqu"
+        android:textSize="18sp" />
+</LinearLayout>

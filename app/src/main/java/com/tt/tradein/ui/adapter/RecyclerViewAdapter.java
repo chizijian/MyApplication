@@ -17,11 +17,25 @@ import java.util.List;
 /**
  * Created by root on 2/3/16.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
 
     private Context mContext;
     private List<String> images;
 
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+            //注意这里使用getTag方法获取position
+            mOnItemClickListener.onItemClick(v,(int)v.getTag());
+        }
+    }
+
+    //define interface
+    public static interface OnItemClickListener {
+        void onItemClick(View view , int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener = null;
     /**
      * Instantiates a new Recycler view adapter.
      *
@@ -41,16 +55,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         cardView.setLayoutParams(new LinearLayoutCompat.LayoutParams(width,width));
         ViewHolder viewHolder = new ViewHolder(cardView);
         viewHolder.mobileImage = (ImageView) cardView.findViewById(R.id.image_picutre);
+        //将创建的View注册点击事件
+        cardView.setOnClickListener(this);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ImageView mobileImageView = (ImageView) holder.mobileImage;
+        ImageView mobileImageView = holder.mobileImage;
         Glide.with(mContext).load(images.get(position)).into(mobileImageView);
+        //将position保存在itemView的Tag中，以便点击时进行获取
+        holder.itemView.setTag(position);
     }
 
     @Override
+    //获取数据的数量
     public int getItemCount() {
         return images.size();
     }
@@ -62,6 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     /**
      * The type View holder.
+     *  自定义的ViewHolder，持有每个Item的的所有界面元素
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         /**
@@ -81,4 +101,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
 }

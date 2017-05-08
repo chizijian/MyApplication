@@ -2,6 +2,7 @@ package com.tt.tradein.ui.adapter;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 import com.tt.tradein.R;
 import com.tt.tradein.mvp.models.Goods;
 import com.tt.tradein.mvp.models.User;
+import com.tt.tradein.ui.activity.GoodsDetailActivity;
 import com.tt.tradein.utils.TakePhotoUtil;
 import com.tt.tradein.utils.TimeUtils;
 import com.tt.tradein.utils.ToastUtil;
+import com.tt.tradein.utils.UIUtils;
 import com.tt.tradein.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -190,6 +193,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             parentHolder = (ParentHolder) convertView.getTag();
             //Log.e(TAG, "getGroupView: "+"不为空：" + groupPosition );
         }
+        parentHolder.mUserNameTextView.setText(users.get(groupPosition).getUsername());
+        parentHolder.mDescriptionTextView.setText(goods.get(groupPosition).getDescription());
         parentHolder.mPriceTextView.setText("￥" + goods.get(groupPosition).getPrice());
         if (!users.isEmpty())
             if (users.get(groupPosition).getPhoto() != null) {
@@ -198,19 +203,17 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 parentHolder.mUserPhotoImageView.setImageUrl(users.get(groupPosition).getPhoto()
                         .getUrl(), TakePhotoUtil.getmImageLoader(context));
             } else {
-               //Log.e(TAG, "getGroupView: user="+users.get(groupPosition).getUsername());
+              // Log.e(TAG, "getGroupView: user="+users.get(groupPosition).getUsername());
                 parentHolder.mUserPhotoImageView.setImageResource(R.mipmap.icon_photo);
             }
         else {
             ToastUtil.showToast(context, "数据加载失败");
         }
-        parentHolder.mUserNameTextView.setText(users.get(groupPosition).getUsername());
-        parentHolder.mDescriptionTextView.setText(goods.get(groupPosition).getDescription());
         return convertView;
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         //Log.e(TAG, "getChildView: " + "第" + groupPosition + "行" + "," + "第" + childPosition + "项");
         ChildHolder childHolder;
         if (goods.get(groupPosition).getImages() == null) {
@@ -230,6 +233,15 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         childHolder.horizontalListView.setLayoutManager(layoutManager);
         RecyclerViewAdapter horizontalListAdapter = new RecyclerViewAdapter(context, goods.get(groupPosition).getImages());
+        horizontalListAdapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Goods", goods.get(groupPosition));
+                bundle.putSerializable("User", users.get(groupPosition));
+                UIUtils.nextPage(getContext(),GoodsDetailActivity.class,bundle);
+            }
+        });
         childHolder.horizontalListView.setAdapter(horizontalListAdapter);
         return convertView;
     }
