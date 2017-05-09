@@ -1,13 +1,13 @@
-package com.tt.tradein.ui.fragment;
+package com.tt.tradein.ui.fragment.nearby_fragment;
 
 import android.os.Bundle;
 
-import com.tt.tradein.ui.fragment.base.BaseFragment;
+import com.tt.tradein.ui.fragment.base.BaseNearByFragment;
 
 /**
  * Created by Administrator on 2017/5/03/0003.
  */
-public class NearByQiuGouFragment extends BaseFragment {
+public class NearByQiuGouFragment extends BaseNearByFragment {
 
     private static final String BASE_FRAGMENT_TYPE="BASE_FRAGMENT_TYPE";
 

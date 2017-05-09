@@ -1,4 +1,4 @@
-package com.tt.tradein.ui.fragment;
+package com.tt.tradein.ui.fragment.nearby_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,8 @@ import android.widget.TextView;
 
 import com.tt.tradein.R;
 import com.tt.tradein.ui.activity.SearchActivity;
-import com.tt.tradein.ui.adapter.MyFragmentPagerAdapter;
+import com.tt.tradein.ui.adapter.MyNearByFragmentPagerAdapter;
+import com.tt.tradein.ui.fragment.base.BaseNearByFragment;
 import com.tt.tradein.utils.UIUtils;
 import com.yhy.tpg.widget.TpgView;
 
@@ -69,7 +70,7 @@ public class NearByFragment extends Fragment {
 
     private Context mContext;
     private View mRootView = null;
-    private boolean isSpinnerFirst = true;
+
     /**
      * The M loc client.
      */
@@ -80,7 +81,8 @@ public class NearByFragment extends Fragment {
      */
     //public MyLocationListenner myListener = new MyLocationListenner();
 
-    private MyFragmentPagerAdapter fragmentAdapter;
+    private MyNearByFragmentPagerAdapter fragmentAdapter;
+    private static String xiaoqu;
 
     @Override
     public void onAttach(Context context) {
@@ -102,7 +104,7 @@ public class NearByFragment extends Fragment {
      * Init data.
      */
     public void initData() {
-        fragmentAdapter = new MyFragmentPagerAdapter(getFragmentManager(), this);
+        fragmentAdapter = new MyNearByFragmentPagerAdapter(getFragmentManager());
         mNearByTpgView.setAdapter(fragmentAdapter);
         mNearByTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
         mNearByTpgView.setTabMode(TabLayout.MODE_FIXED);
@@ -183,7 +185,8 @@ public class NearByFragment extends Fragment {
     @OnItemSelected(R.id.current_xiaoqu)
     void onItemSelected() {
         Log.e(TAG, "onItemSelected: " + mCurrentXiaoqu.getSelectedItem().toString());
-        fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
+        xiaoqu=mCurrentXiaoqu.getSelectedItem().toString();
+        fragmentAdapter.reloadDataForCurrentPager(xiaoqu);
     }
 
     /**
@@ -226,21 +229,17 @@ public class NearByFragment extends Fragment {
         super.onDestroy();
     }
 
-    /**
-     * Gets second frangment.
-     *
-     * @return the second frangment
-     */
-    public NearBySecondHandFrangment getSecondFrangment() {
-        return NearBySecondHandFrangment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
+    public static BaseNearByFragment getInstance(int type){
+        BaseNearByFragment baseNearByFragment=null;
+        switch (type){
+            case 0:
+                baseNearByFragment=NearBySecondHandFrangment.newInstance(xiaoqu);
+                break;
+            case 1:
+                baseNearByFragment=NearByQiuGouFragment.newInstance(xiaoqu);
+                break;
+        }
+        return baseNearByFragment;
     }
 
-    /**
-     * Gets qiugou fragment.
-     *
-     * @return the qiugou fragment
-     */
-    public NearByQiuGouFragment getQiugouFragment() {
-        return NearByQiuGouFragment.newInstance(mCurrentXiaoqu.getSelectedItem().toString());
-    }
 }

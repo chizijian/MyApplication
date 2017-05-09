@@ -1,23 +1,18 @@
 package com.tt.tradein.ui.fragment.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tt.tradein.R;
-import com.tt.tradein.app.MyApp;
 import com.tt.tradein.di.component.AppComponent;
 import com.tt.tradein.di.component.DaggerMainActivityComponent;
 import com.tt.tradein.di.modules.MainActivityModule;
@@ -29,7 +24,6 @@ import com.tt.tradein.ui.activity.GoodsDetailActivity;
 import com.tt.tradein.ui.adapter.ExpandableListViewAdapter;
 import com.tt.tradein.widget.CustomExpandableListView;
 import com.yhy.tpg.handler.ResultHandler;
-import com.yhy.tpg.pager.TpgFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +31,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/5/03/0003.
  */
-public abstract class BaseFragment extends TpgFragment implements NearByView {
+public abstract class BaseNearByFragment extends BaseTpgFrament implements NearByView {
 
     /**
      * The M near by goods list.
      */
-    @BindView(R.id.near_by_goods_list)
+    @BindView(R.id.goods_list)
     CustomExpandableListView mNearByGoodsList;
     /**
      * The M goods empty textview.
@@ -61,31 +53,12 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
      */
     @BindView(R.id.scrollView)
     ScrollView mScrollView;
-    private View view;
-    private Unbinder unbinder;
 
     /**
      * The Presenter.
      */
     @Inject
     NearByPresenter presenter;
-
-    private Context mContext;
-
-    private final ThreadLocal<List<Goods>> second_goodses = new ThreadLocal<>();
-    private final ThreadLocal<List<User>> second_userses = new ThreadLocal<>();
-
-    private final ThreadLocal<ExpandableListViewAdapter> adapter = new ThreadLocal<>();
-
-    private boolean isFirstCreated = true;
-    private ResultHandler mHandler;
-
-    /**
-     * Is qiu gou boolean.
-     *
-     * @return the boolean
-     */
-    public abstract boolean IsQiuGou();//传递货物状态
 
     /**
      * Gets xiqoqu.
@@ -95,11 +68,19 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
     public abstract String getXiqoqu();
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mContext = context;
+    public int getContentViewId() {
+        return R.layout.fragment_goods_list;
     }
 
+    @Override
+    public void initView() {
+        presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
+    }
+
+    @Override
+    public void HiddenChange() {
+        presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
+    }
     @Override
     public void reloadDate(Object... args) {
         super.reloadDate(args);
@@ -116,35 +97,10 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
     @Override
     protected void initData(ResultHandler handler) {
         mHandler = handler;
-        presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
+        if (presenter != null)
+            presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (view == null) {
-            isFirstCreated = false;
-            view = View.inflate(getActivity(), R.layout.nearby_secondhand_frangment, null);
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(this, view);
-        setupComponent(((MyApp) mContext.getApplicationContext()).getAppComponent());
-        second_goodses.set(new ArrayList<Goods>());
-        second_userses.set(new ArrayList<User>());
-        //presenter.loadGoodsInfor(mContext,getXiqoqu(),IsQiuGou());
-        return view;
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void onLoadGoodsInforSuccess(List<Goods> goods) {
@@ -153,27 +109,22 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
 
     @Override
     public void onLoadGoodsError(String str) {
-        if(mHandler!=null)
-         mHandler.sendErrorHandler();
+        if (mHandler != null)
+            mHandler.sendErrorHandler();
         String TAG = "BaseFrament";
         Log.e(TAG, "onLoadGoodsError: " + str);
     }
 
     @Override
     public void parseUser(List<User> users, List<Goods> goodses) {
-        second_userses.get().clear();
-        second_goodses.get().clear();
-        second_userses.get().addAll(users);
-        second_goodses.get().addAll(goodses);
+        this.userses.get().clear();
+        this.goodese.get().clear();
+        this.userses.get().addAll(users);
+        this.goodese.get().addAll(goodses);
         if (adapter.get() == null)
-            adapter.set(new ExpandableListViewAdapter(mContext, second_goodses.get(), second_userses.get()));
+            adapter.set(new ExpandableListViewAdapter(mContext, goodese.get(), userses.get()));
         adapter.get().notifyDataSetChanged();
         initUI();
-    }
-
-    @Override
-    public boolean shouldLoadDataAtFirst() {
-        return true;
     }
 
     /**
@@ -181,20 +132,13 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
      *
      * @param appComponent the app component
      */
+    @Override
     protected void setupComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)
                 .mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden && !isFirstCreated) {
-            presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
-        }
-        super.onHiddenChanged(hidden);
     }
 
     private void initUI() {
@@ -212,7 +156,7 @@ public abstract class BaseFragment extends TpgFragment implements NearByView {
             return new Handler(Looper.getMainLooper()) {
                 public void handleMessage(Message msg) {
                     adapter.set(null);
-                    initHomeList(second_goodses.get(), second_userses.get());
+                    initHomeList(goodese.get(), userses.get());
                     if (mHandler != null)
                         mHandler.sendSuccessHandler();
                 }

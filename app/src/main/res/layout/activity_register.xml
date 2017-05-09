@@ -221,13 +221,33 @@
         android:visibility="gone">
 
         <EditText
-        android:id="@+id/activity_register_age_edittext"
+            android:id="@+id/activity_register_age_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_register_edittext_height"
+            android:background="@null"
+            android:digits="1234567890_"
+            android:hint="年龄"
+            android:maxLength="20" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/activity_register_alipay_ll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_register_edittext_height"
-        android:background="@null"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
-        android:hint="年龄"
-        android:maxLength="20" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_register_edittext_layout_margin"
+        android:layout_marginRight="@dimen/activity_register_edittext_layout_margin"
+        android:layout_marginTop="@dimen/activity_login_layout_margin"
+        android:background="@color/colorWhite"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/activity_register_alipay_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_register_edittext_height"
+            android:background="@null"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+            android:hint="年龄"
+            android:maxLength="20" />
     </LinearLayout>
 
     <TextView

@@ -13,9 +13,7 @@ import com.tt.tradein.R;
 import com.tt.tradein.domain.service.WeatherApiService;
 import com.tt.tradein.mvp.models.Banner;
 import com.tt.tradein.mvp.models.Goods;
-import com.tt.tradein.mvp.models.QiugouGoods;
 import com.tt.tradein.mvp.models.User;
-import com.tt.tradein.mvp.models.WeatherResultBean;
 import com.tt.tradein.mvp.views.HomeView;
 import com.tt.tradein.ui.adapter.HomeHorizentalListViewAdapter;
 
@@ -25,10 +23,6 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * The type Home view presenter.
@@ -75,7 +69,7 @@ public class HomeViewPresenterImpl implements HomeViewPresenter {
                 public void onSuccess(User user) {
                     users.add(user);
                     if (users.size() == goods.size()){
-                        homeView.parseUser(users);
+                        homeView.parseUser(users,goods);
                     }
                     /*Message message = handler.get().obtainMessage();
                     message.what = 0;
@@ -109,48 +103,8 @@ public class HomeViewPresenterImpl implements HomeViewPresenter {
         }
     }
 
-    @Override
-    public void loadQiugouGoodsInfo(Context context) {
-        BmobQuery<QiugouGoods> query = new BmobQuery<QiugouGoods>();
-        query.order("-createdAt");
-        query.findObjects(context, new FindListener<QiugouGoods>() {
-            @Override
-            public void onSuccess(List<QiugouGoods> list) {
-                homeView.onLoadQiugouGoodsInforSuccess(list);
-            }
 
-            @Override
-            public void onError(int i, String s) {
-                homeView.onLoadQiugoGoodsError(s);
-            }
-        });
-    }
 
-    @Override
-    public void parseQiugouGoodsUser(Context context, final List<QiugouGoods> qiugou_goods) {
-        final List<User> users = new ArrayList<>();
-        for (QiugouGoods good : qiugou_goods
-                ) {
-            BmobQuery<User> query = new BmobQuery<User>();
-            query.addWhereEqualTo("objectId", good.getUserid());
-            //Log.e(TAG, "parseGoodsUser: "+goods.get(i).getUserid());
-            query.findObjects(context, new FindListener<User>() {
-                @Override
-                public void onSuccess(List<User> list) {
-                    users.addAll(list);
-                    Log.e(TAG, "handleMessage: users.size()=:  " + users.size());
-                    if (users.size() == qiugou_goods.size()) {
-                        homeView.parseQiugouUser(users);
-                    }
-                }
-
-                @Override
-                public void onError(int i, String s) {
-
-                }
-            });
-        }
-    }
 
     @Override
     public void loadGoodsInfor(Context context, final boolean qiugou) {
@@ -206,35 +160,6 @@ public class HomeViewPresenterImpl implements HomeViewPresenter {
         });
     }
 
-    @Override
-    public void loadHorizentalListViewData(Context context) {
-        //homeHorizentalListViewAdapter = new HomeHorizentalListViewAdapter(context,titles,ids);
-        //homeView.setHirizentalListViewData(homeHorizentalListViewAdapter);
-    }
-
-    @Override
-    public void load(String apikey, String strname) {
-        Observable<WeatherResultBean> observable = weatherApiService.queryWeather(apikey, strname);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<WeatherResultBean>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        homeView.errorLoad(e);
-                    }
-
-                    @Override
-                    public void onNext(WeatherResultBean daily) {
-                        homeView.showweatherInfor(daily);
-                    }
-                });
-    }
-
     /**
      * Instantiates a new Home view presenter.
      *
@@ -260,7 +185,7 @@ public class HomeViewPresenterImpl implements HomeViewPresenter {
                                 List<User> list=new ArrayList<>();
                                 list.addAll(users);
                                 users.clear();
-                                homeView.parseUser(list);
+                                homeView.parseUser(list,goods);
                             }
                             break;
                     }
