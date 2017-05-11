@@ -23,7 +23,7 @@ import com.tt.tradein.mvp.presenter.HomeViewPresenter;
 import com.tt.tradein.mvp.views.HomeView;
 import com.tt.tradein.ui.activity.KindActivity;
 import com.tt.tradein.ui.activity.SearchActivity;
-import com.tt.tradein.ui.adapter.MyHomeFragmentPageAdapter;
+import com.tt.tradein.ui.adapter.FragmentPagerAdapter.MyHomeFragmentPageAdapter;
 import com.tt.tradein.ui.adapter.base.BaseFragmentmentPagerAdapter;
 import com.tt.tradein.utils.UIUtils;
 import com.tt.tradein.widget.ImageFlipper;

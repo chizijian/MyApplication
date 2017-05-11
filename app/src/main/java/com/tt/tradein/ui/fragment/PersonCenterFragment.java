@@ -189,6 +189,7 @@ public class PersonCenterFragment extends Fragment implements PersonCenterView,O
                 mUserSpecified.setText(user.getSignature());
             }
         } else {
+            mPersonCenterPhoto.setDefaultImageResId(R.mipmap.icon_photo);
             mLoginedRl.setVisibility(View.GONE);
             mLoginRightNowRl.setVisibility(View.VISIBLE);
         }

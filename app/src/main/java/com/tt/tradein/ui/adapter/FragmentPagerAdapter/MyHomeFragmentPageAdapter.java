@@ -1,4 +1,4 @@
-package com.tt.tradein.ui.adapter;
+package com.tt.tradein.ui.adapter.FragmentPagerAdapter;
 
 import android.support.v4.app.FragmentManager;
 

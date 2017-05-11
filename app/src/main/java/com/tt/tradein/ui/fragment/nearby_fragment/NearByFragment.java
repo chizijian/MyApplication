@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.tt.tradein.R;
 import com.tt.tradein.ui.activity.SearchActivity;
-import com.tt.tradein.ui.adapter.MyNearByFragmentPagerAdapter;
+import com.tt.tradein.ui.adapter.FragmentPagerAdapter.MyNearByFragmentPagerAdapter;
 import com.tt.tradein.ui.adapter.base.BaseFragmentmentPagerAdapter;
 import com.tt.tradein.ui.fragment.base.BaseNearByFragment;
 import com.tt.tradein.utils.UIUtils;
