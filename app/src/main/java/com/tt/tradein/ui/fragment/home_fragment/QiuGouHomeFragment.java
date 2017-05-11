@@ -13,4 +13,9 @@ public class QiuGouHomeFragment extends BaseHomeFragment {
     public boolean IsQiuGou() {
         return true;
     }
+
+    @Override
+    public boolean shouldLoadDataAtFirst() {
+        return false;
+    }
 }

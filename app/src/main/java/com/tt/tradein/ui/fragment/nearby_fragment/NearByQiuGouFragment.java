@@ -18,6 +18,11 @@ public class NearByQiuGouFragment extends BaseNearByFragment {
         super();
     }
 
+    @Override
+    public boolean shouldLoadDataAtFirst() {
+        return false;
+    }
+
     /**
      * New instance near by qiu gou fragment.
      *
@@ -41,5 +46,4 @@ public class NearByQiuGouFragment extends BaseNearByFragment {
     public String getXiqoqu() {
         return getArguments().getString(BASE_FRAGMENT_TYPE);
     }
-
 }

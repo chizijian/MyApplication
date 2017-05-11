@@ -9,14 +9,7 @@ import android.view.ViewGroup;
 
 import com.tt.tradein.app.MyApp;
 import com.tt.tradein.di.component.AppComponent;
-import com.tt.tradein.mvp.models.Goods;
-import com.tt.tradein.mvp.models.User;
-import com.tt.tradein.ui.adapter.ExpandableListViewAdapter;
-import com.yhy.tpg.handler.ResultHandler;
 import com.yhy.tpg.pager.TpgFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -29,14 +22,14 @@ public abstract class BaseTpgFrament extends TpgFragment {
 
     private Unbinder unbinder;
 
+    @Override
+    protected View getSuccessView() {
+        return mContentView;
+    }
+
     private View mContentView;//布局
     private boolean isFirstCreated=true;
-
-    protected Context mContext;//上下文
-    protected  ResultHandler mHandler;
-    protected final ThreadLocal<List<Goods>> goodese = new ThreadLocal<>();
-    protected final ThreadLocal<List<User>> userses = new ThreadLocal<>();
-    protected final ThreadLocal<ExpandableListViewAdapter> adapter = new ThreadLocal<>();
+    private Context mContext;
     /**
      * Is qiu gou boolean.
      *
@@ -59,7 +52,7 @@ public abstract class BaseTpgFrament extends TpgFragment {
         super.onCreate(savedInstanceState);
         if(mContentView==null){
             isFirstCreated=false;
-            mContentView=View.inflate(mContext,getContentViewId(),null);
+            mContentView=View.inflate(getActivity(),getContentViewId(),null);
         }
     }
 
@@ -67,8 +60,6 @@ public abstract class BaseTpgFrament extends TpgFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         unbinder= ButterKnife.bind(this,mContentView);
         setupComponent(((MyApp) mContext.getApplicationContext()).getAppComponent());
-        goodese.set(new ArrayList<Goods>());
-        userses.set(new ArrayList<User>());
         initView();
         return mContentView;
     }
@@ -84,15 +75,6 @@ public abstract class BaseTpgFrament extends TpgFragment {
         super.onDestroy();
     }
 
-    @Override
-    protected View getSuccessView() {
-        return null;
-    }
-
-    @Override
-    protected void initData(ResultHandler handler) {
-
-    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -102,8 +84,4 @@ public abstract class BaseTpgFrament extends TpgFragment {
         super.onHiddenChanged(hidden);
     }
 
-    @Override
-    public boolean shouldLoadDataAtFirst() {
-        return true;
-    }
 }

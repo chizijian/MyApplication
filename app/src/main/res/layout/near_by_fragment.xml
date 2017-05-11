@@ -64,12 +64,20 @@
             android:src="@mipmap/search_icon"
             android:contentDescription="@string/str_search_hint" />
     </RelativeLayout>
+
     <com.yhy.tpg.widget.TpgView
         android:id="@+id/NearBy_TpgView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         app:expand_visible="gone"
         app:tabGravity="fill"
         app:tabMode="fixed" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="功能测试"
+        android:visibility="gone" />
 
 </LinearLayout>

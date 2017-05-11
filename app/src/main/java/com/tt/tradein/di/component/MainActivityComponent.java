@@ -5,11 +5,11 @@ import com.tt.tradein.mvp.presenter.HomeViewPresenter;
 import com.tt.tradein.mvp.presenter.KindSortPresenter;
 import com.tt.tradein.mvp.presenter.NearByPresenter;
 import com.tt.tradein.mvp.presenter.PersonCenterFragmentPresenter;
-import com.tt.tradein.ui.fragment.home_fragment.HomeFragment;
 import com.tt.tradein.ui.fragment.KindSortFragment;
 import com.tt.tradein.ui.fragment.PersonCenterFragment;
 import com.tt.tradein.ui.fragment.base.BaseHomeFragment;
 import com.tt.tradein.ui.fragment.base.BaseNearByFragment;
+import com.tt.tradein.ui.fragment.home_fragment.HomeFragment;
 import com.tt.tradein.ui.fragment.nearby_fragment.NearBySecondHandFrangment;
 
 import dagger.Component;

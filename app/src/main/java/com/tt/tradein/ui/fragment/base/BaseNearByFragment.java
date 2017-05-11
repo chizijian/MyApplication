@@ -1,5 +1,6 @@
 package com.tt.tradein.ui.fragment.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,27 +32,28 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/5/03/0003.
  */
 public abstract class BaseNearByFragment extends BaseTpgFrament implements NearByView {
 
+    private final String TAG = "BaseNearByFragment";
+
     /**
      * The M near by goods list.
      */
-    @BindView(R.id.goods_list)
+    @BindView(R.id.near_by_goods_list)
     CustomExpandableListView mNearByGoodsList;
     /**
      * The M goods empty textview.
      */
-    @BindView(R.id.goods_empty_textview)
+    @BindView(R.id.near_by_goods_empty_textview)
     TextView mGoodsEmptyTextview;
     /**
      * The M scroll view.
      */
-    @BindView(R.id.scrollView)
+    @BindView(R.id.near_by_scrollView)
     ScrollView mScrollView;
 
     /**
@@ -59,6 +61,18 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
      */
     @Inject
     NearByPresenter presenter;
+
+    private Context mContext;//上下文
+    private ResultHandler mHandler;
+    private final ThreadLocal<List<Goods>> goodese = new ThreadLocal<>();
+    private final ThreadLocal<List<User>> userses = new ThreadLocal<>();
+    private final ThreadLocal<ExpandableListViewAdapter> adapter = new ThreadLocal<>();
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = context;
+    }
 
     /**
      * Gets xiqoqu.
@@ -69,29 +83,29 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
 
     @Override
     public int getContentViewId() {
-        return R.layout.fragment_goods_list;
+        return R.layout.nearby_good_list_fragment;
     }
 
     @Override
     public void initView() {
-        presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
+        userses.set(new ArrayList<User>());
+        goodese.set(new ArrayList<Goods>());
+        adapter.set(new ExpandableListViewAdapter(mContext, goodese.get(), userses.get()));
+/*        if(presenter!=null)
+            presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());*/
     }
 
     @Override
     public void HiddenChange() {
-        presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());
+        /*presenter.loadGoodsInfor(mContext, getXiqoqu(), IsQiuGou());*/
     }
+
     @Override
     public void reloadDate(Object... args) {
         super.reloadDate(args);
         if (presenter != null) {
             presenter.loadGoodsInfor(mContext, String.valueOf(args[0]), IsQiuGou());
         }
-    }
-
-    @Override
-    protected View getSuccessView() {
-        return mNearByGoodsList;
     }
 
     @Override
@@ -117,14 +131,16 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
 
     @Override
     public void parseUser(List<User> users, List<Goods> goodses) {
-        this.userses.get().clear();
-        this.goodese.get().clear();
-        this.userses.get().addAll(users);
-        this.goodese.get().addAll(goodses);
-        if (adapter.get() == null)
-            adapter.set(new ExpandableListViewAdapter(mContext, goodese.get(), userses.get()));
-        adapter.get().notifyDataSetChanged();
-        initUI();
+        if ((goodses.isEmpty() || users.isEmpty())) {//没有数据
+            mScrollView.setVisibility(View.GONE);
+            mGoodsEmptyTextview.setVisibility(View.VISIBLE);;
+        } else {
+            this.userses.get().clear();
+            this.goodese.get().clear();
+            this.userses.get().addAll(users);
+            this.goodese.get().addAll(goodses);
+            initUI();//更新UI
+        }
     }
 
     /**
@@ -157,27 +173,10 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
                 public void handleMessage(Message msg) {
                     adapter.set(null);
                     initHomeList(goodese.get(), userses.get());
-                    if (mHandler != null)
-                        mHandler.sendSuccessHandler();
                 }
             };
         }
     };
-
-    /**
-     * On click.
-     *
-     * @param v the v
-     */
-    @OnClick({R.id.goods_empty_textview, R.id.scrollView})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.goods_empty_textview:
-                break;
-            case R.id.scrollView:
-                break;
-        }
-    }
 
     private class MyGoodsListGroupListener implements ExpandableListView.OnGroupClickListener {
         private List<Goods> goodses = new ArrayList<>();
@@ -237,22 +236,22 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
     }
 
     private void initHomeList(List<Goods> goodses, List<User> userses) {
-        if (goodses.isEmpty() || userses.isEmpty()) {
-            mScrollView.setVisibility(View.GONE);
-            mGoodsEmptyTextview.setVisibility(View.VISIBLE);
-        } else {
-            mScrollView.setVisibility(View.VISIBLE);
-            mGoodsEmptyTextview.setVisibility(View.GONE);
 
-            adapter.set(new ExpandableListViewAdapter(mContext, goodses, userses));
-            mNearByGoodsList.setAdapter(adapter.get());
-            adapter.get().notifyDataSetChanged();
-            for (int i = 0; i < adapter.get().getGroupCount(); i++) {
-                mNearByGoodsList.collapseGroup(i);
-                mNearByGoodsList.expandGroup(i);
-            }
-            mNearByGoodsList.setOnGroupClickListener(new MyGoodsListGroupListener(goodses, userses));
-            mNearByGoodsList.setOnChildClickListener(new MyGoodsListChildListener(goodses, userses));
+        mScrollView.setVisibility(View.VISIBLE);
+        mGoodsEmptyTextview.setVisibility(View.GONE);
+
+        Log.e(TAG, "initHomeList: userses.size=" + userses.size());
+        Log.e(TAG, "initHomeList: goodses.size=" + goodses.size());
+
+
+        adapter.set(new ExpandableListViewAdapter(mContext, goodses, userses));
+        mNearByGoodsList.setAdapter(adapter.get());
+        adapter.get().notifyDataSetChanged();
+        for (int i = 0; i < adapter.get().getGroupCount(); i++) {
+            mNearByGoodsList.collapseGroup(i);
+            mNearByGoodsList.expandGroup(i);
         }
+        mNearByGoodsList.setOnGroupClickListener(new MyGoodsListGroupListener(goodses, userses));
+        mNearByGoodsList.setOnChildClickListener(new MyGoodsListChildListener(goodses, userses));
     }
 }

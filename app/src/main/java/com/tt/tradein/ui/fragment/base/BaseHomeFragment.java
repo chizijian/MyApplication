@@ -1,5 +1,6 @@
 package com.tt.tradein.ui.fragment.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import com.tt.tradein.mvp.views.HomeView;
 import com.tt.tradein.ui.activity.GoodsDetailActivity;
 import com.tt.tradein.ui.adapter.ExpandableListViewAdapter;
 import com.tt.tradein.widget.CustomExpandableListView;
+import com.yhy.tpg.handler.ResultHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,20 +39,45 @@ import butterknife.BindView;
  */
 
 public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeView {
-    @BindView(R.id.goods_list)
+    @BindView(R.id.home_goods_list)
     CustomExpandableListView GoodsList;
-    @BindView(R.id.scrollView)
+    @BindView(R.id.home_scrollView)
     ScrollView mScrollView;
-    @BindView(R.id.goods_empty_textview)
+    @BindView(R.id.home_goods_empty_textview)
     TextView mGoodsEmptyTextview;
+
+    protected Context mContext;//上下文
+    private ResultHandler mHandler;
+    private final ThreadLocal<List<Goods>> goodese = new ThreadLocal<>();
+    private final ThreadLocal<List<User>> userses = new ThreadLocal<>();
+    private final ThreadLocal<ExpandableListViewAdapter> adapter = new ThreadLocal<>();
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = context;
+    }
 
     @Inject
     HomeViewPresenter presenter;
 
-    private final String TAG="BaseHomeFragment";
+    private final String TAG = "BaseHomeFragment";
+
     @Override
     public void errorLoad(Throwable t) {
 
+    }
+
+    @Override
+    protected View getSuccessView() {
+        return mScrollView;
+    }
+
+    @Override
+    protected void initData(ResultHandler handler) {
+        mHandler = handler;
+        if (presenter != null)
+            presenter.loadGoodsInfor(mContext, IsQiuGou());
     }
 
     @Override
@@ -60,17 +87,21 @@ public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeVie
 
     @Override
     public int getContentViewId() {
-        return R.layout.fragment_goods_list;
+        return R.layout.goods_list_fragment;
     }
 
     @Override
     public void reloadDate(Object... args) {
         super.reloadDate(args);
-        presenter.loadGoodsInfor(mContext,IsQiuGou());
+        if (presenter != null)
+            presenter.loadGoodsInfor(mContext, IsQiuGou());
     }
 
     @Override
     public void initView() {
+        userses.set(new ArrayList<User>());
+        goodese.set(new ArrayList<Goods>());
+        adapter.set(new ExpandableListViewAdapter(mContext, goodese.get(), userses.get()));
         presenter.loadGoodsInfor(mContext, IsQiuGou());
     }
 
@@ -183,13 +214,13 @@ public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeVie
 
     private void initHomeList(List<Goods> goodses, List<User> userses) {
         if (goodses.isEmpty() || userses.isEmpty()) {
-            mScrollView.setVisibility(View.GONE);
-            mGoodsEmptyTextview.setVisibility(View.VISIBLE);
+            /*mScrollView.setVisibility(View.GONE);
+            mGoodsEmptyTextview.setVisibility(View.VISIBLE);*/
         } else {
-            mScrollView.setVisibility(View.VISIBLE);
-            mGoodsEmptyTextview.setVisibility(View.GONE);
+           /* mScrollView.setVisibility(View.VISIBLE);
+            mGoodsEmptyTextview.setVisibility(View.GONE);*/
 
-            Log.e(TAG, "initHomeList: users.size="+userses.size() );
+            Log.e(TAG, "initHomeList: users.size=" + userses.size());
             adapter.set(new ExpandableListViewAdapter(mContext, goodses, userses));
             GoodsList.setAdapter(adapter.get());
             adapter.get().notifyDataSetChanged();

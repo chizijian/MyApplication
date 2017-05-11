@@ -19,6 +19,8 @@ import cn.bmob.v3.listener.FindListener;
 public class NearByPresenterImpl implements NearByPresenter {
     private NearByView nearByView;
 
+    private final String TAG="NearByPresenterImpl";
+
     private List<User> users = new ArrayList<>();
     /**
      * The Goods.
@@ -35,8 +37,6 @@ public class NearByPresenterImpl implements NearByPresenter {
     }
     @Override
     public void loadGoodsInfor(Context context, String city,boolean qiugou) {
-        users.clear();
-        goods.clear();
         BmobQuery<Goods> query = new BmobQuery<>();
         //query.addWhereEqualTo("prince",city);
         query.addWhereEqualTo("xiaoqu",city);
@@ -47,13 +47,21 @@ public class NearByPresenterImpl implements NearByPresenter {
         query.findObjects(context, new FindListener<Goods>() {
             @Override
             public void onSuccess(List<Goods> list) {
-                Log.e("NearBy",list.size()+"Goods");
+                Log.e(TAG,list.size()+"Goods");
+                users.clear();
+                goods.clear();
                 for (Goods good:list
                      ) {
                     users.add(good.getUser());
                 }
+                goods.addAll(list);
                // nearByView.onLoadGoodsInforSuccess(list);
-                nearByView.parseUser(users,list);
+                if(users.size()==goods.size())
+                    nearByView.parseUser(users,goods);
+                else {
+                    Log.e(TAG, "onSuccess: 用户与商品数不符");
+                }
+
             }
 
             @Override

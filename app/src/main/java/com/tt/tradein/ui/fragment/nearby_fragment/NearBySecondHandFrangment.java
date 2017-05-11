@@ -9,11 +9,11 @@ import com.tt.tradein.ui.fragment.base.BaseNearByFragment;
  */
 public class NearBySecondHandFrangment extends BaseNearByFragment {
 
-    private static final String BASE_FRAGMENT_TYPE="BASE_FRAGMENT_TYPE";
+    private static final String BASE_FRAGMENT_TYPE = "BASE_FRAGMENT_TYPE";
 
     @Override
     public boolean shouldLoadDataAtFirst() {
-    return super.shouldLoadDataAtFirst();
+        return true;
     }
 
     /**
@@ -29,6 +29,7 @@ public class NearBySecondHandFrangment extends BaseNearByFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public boolean IsQiuGou() {
         return false;

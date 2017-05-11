@@ -13,7 +13,6 @@ public class MyNearByFragmentPagerAdapter extends BaseFragmentmentPagerAdapter {
     public MyNearByFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
-
     @Override
     public TpgFragment getPager(int position) {
         return NearByPagerFactory.create(position);

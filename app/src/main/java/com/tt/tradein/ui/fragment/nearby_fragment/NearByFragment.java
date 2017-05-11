@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.tt.tradein.R;
 import com.tt.tradein.ui.activity.SearchActivity;
 import com.tt.tradein.ui.adapter.MyNearByFragmentPagerAdapter;
+import com.tt.tradein.ui.adapter.base.BaseFragmentmentPagerAdapter;
 import com.tt.tradein.ui.fragment.base.BaseNearByFragment;
 import com.tt.tradein.utils.UIUtils;
 import com.yhy.tpg.widget.TpgView;
@@ -81,7 +82,7 @@ public class NearByFragment extends Fragment {
      */
     //public MyLocationListenner myListener = new MyLocationListenner();
 
-    private MyNearByFragmentPagerAdapter fragmentAdapter;
+    private BaseFragmentmentPagerAdapter fragmentAdapter;
     private static String xiaoqu;
 
     @Override
@@ -104,7 +105,7 @@ public class NearByFragment extends Fragment {
      * Init data.
      */
     public void initData() {
-        fragmentAdapter = new MyNearByFragmentPagerAdapter(getFragmentManager());
+        fragmentAdapter = new MyNearByFragmentPagerAdapter(getChildFragmentManager());//不能用getFragmentManager(),会导致子fragment不显示
         mNearByTpgView.setAdapter(fragmentAdapter);
         mNearByTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
         mNearByTpgView.setTabMode(TabLayout.MODE_FIXED);
@@ -230,16 +231,15 @@ public class NearByFragment extends Fragment {
     }
 
     public static BaseNearByFragment getInstance(int type){
-        BaseNearByFragment baseNearByFragment=null;
         switch (type){
             case 0:
-                baseNearByFragment=NearBySecondHandFrangment.newInstance(xiaoqu);
-                break;
+                Log.e(TAG, "getInstance: 二手" );
+                return NearBySecondHandFrangment.newInstance(xiaoqu);
             case 1:
-                baseNearByFragment=NearByQiuGouFragment.newInstance(xiaoqu);
-                break;
+                Log.e(TAG, "getInstance: 求购" );
+                return  NearByQiuGouFragment.newInstance(xiaoqu);
         }
-        return baseNearByFragment;
+        return NearBySecondHandFrangment.newInstance(xiaoqu);
     }
 
 }

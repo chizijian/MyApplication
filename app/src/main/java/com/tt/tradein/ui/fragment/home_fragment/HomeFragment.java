@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment implements HomeView {
         List<ImageView> imageViews = new ArrayList<>();
         presenter.loadBannerData(mContext, imageViews);
 
-        final BaseFragmentmentPagerAdapter baseFragmentmentPagerAdapter = new MyHomeFragmentPageAdapter(getFragmentManager());
+        final BaseFragmentmentPagerAdapter baseFragmentmentPagerAdapter = new MyHomeFragmentPageAdapter(getChildFragmentManager());
         mTpgView.setAdapter(baseFragmentmentPagerAdapter);
         mTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
         mTpgView.setTabMode(TabLayout.MODE_FIXED);

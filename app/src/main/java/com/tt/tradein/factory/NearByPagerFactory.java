@@ -15,5 +15,15 @@ public class NearByPagerFactory {
      */
     public static TpgFragment create(int position) {
         return NearByFragment.getInstance(position);
+       /* test t=null;
+       switch (position){
+           case 0:
+               t=new second_test();
+               break;
+           case 1:
+               t=new qiugou_test();
+               break;
+       }
+       return t;*/
     }
 }

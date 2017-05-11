@@ -12,6 +12,11 @@ public class SecondHandHomeFragment extends BaseHomeFragment {
     private static final String BASE_FRAGMENT_TYPE ="SecondHandHomeFragment" ;
 
     @Override
+    public boolean shouldLoadDataAtFirst() {
+        return true;
+    }
+
+    @Override
     public boolean IsQiuGou() {
         return false;
     }

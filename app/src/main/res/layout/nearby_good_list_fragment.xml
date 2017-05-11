@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/near_by_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -15,7 +15,7 @@
             android:orientation="vertical">
 
             <com.tt.tradein.widget.CustomExpandableListView
-                android:id="@+id/goods_list"
+                android:id="@+id/near_by_goods_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
@@ -26,17 +26,14 @@
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:focusable="false"
-                android:groupIndicator="@null"
-                android:visibility="visible" />
+                android:groupIndicator="@null" />
         </LinearLayout>
     </ScrollView>
 
     <TextView
-        android:id="@+id/goods_empty_textview"
+        android:id="@+id/near_by_goods_empty_textview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical|center"
         android:gravity="center"
-        android:text="暂时没有人发布商品信息"
-        android:visibility="gone" />
+        android:text="暂时没有人发布商品信息" />
 </LinearLayout>
