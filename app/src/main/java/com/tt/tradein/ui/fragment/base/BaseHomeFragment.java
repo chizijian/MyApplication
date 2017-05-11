@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tt.tradein.R;
+import com.tt.tradein.app.MyApp;
 import com.tt.tradein.di.component.AppComponent;
 import com.tt.tradein.di.component.DaggerMainActivityComponent;
 import com.tt.tradein.di.modules.MainActivityModule;
@@ -39,15 +40,14 @@ import butterknife.BindView;
  */
 
 public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeView {
-    @BindView(R.id.home_goods_list)
+    @BindView(R.id.goods_list)
     CustomExpandableListView GoodsList;
-    @BindView(R.id.home_scrollView)
+    @BindView(R.id.scrollView)
     ScrollView mScrollView;
-    @BindView(R.id.home_goods_empty_textview)
+    @BindView(R.id.goods_empty_textview)
     TextView mGoodsEmptyTextview;
 
     protected Context mContext;//上下文
-    private ResultHandler mHandler;
     private final ThreadLocal<List<Goods>> goodese = new ThreadLocal<>();
     private final ThreadLocal<List<User>> userses = new ThreadLocal<>();
     private final ThreadLocal<ExpandableListViewAdapter> adapter = new ThreadLocal<>();
@@ -75,7 +75,6 @@ public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeVie
 
     @Override
     protected void initData(ResultHandler handler) {
-        mHandler = handler;
         if (presenter != null)
             presenter.loadGoodsInfor(mContext, IsQiuGou());
     }
@@ -83,11 +82,6 @@ public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeVie
     @Override
     public void showBannerData(List<ImageView> images) {
 
-    }
-
-    @Override
-    public int getContentViewId() {
-        return R.layout.goods_list_fragment;
     }
 
     @Override
@@ -99,6 +93,7 @@ public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeVie
 
     @Override
     public void initView() {
+        setupComponent(((MyApp) mContext.getApplicationContext()).getAppComponent());
         userses.set(new ArrayList<User>());
         goodese.set(new ArrayList<Goods>());
         adapter.set(new ExpandableListViewAdapter(mContext, goodese.get(), userses.get()));
@@ -110,7 +105,6 @@ public abstract class BaseHomeFragment extends BaseTpgFrament implements HomeVie
         presenter.loadGoodsInfor(mContext, IsQiuGou());
     }
 
-    @Override
     protected void setupComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)

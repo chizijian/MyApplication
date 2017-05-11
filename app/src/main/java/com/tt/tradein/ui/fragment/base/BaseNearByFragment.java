@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tt.tradein.R;
+import com.tt.tradein.app.MyApp;
 import com.tt.tradein.di.component.AppComponent;
 import com.tt.tradein.di.component.DaggerMainActivityComponent;
 import com.tt.tradein.di.modules.MainActivityModule;
@@ -43,17 +44,17 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
     /**
      * The M near by goods list.
      */
-    @BindView(R.id.near_by_goods_list)
+    @BindView(R.id.goods_list)
     CustomExpandableListView mNearByGoodsList;
     /**
      * The M goods empty textview.
      */
-    @BindView(R.id.near_by_goods_empty_textview)
+    @BindView(R.id.goods_empty_textview)
     TextView mGoodsEmptyTextview;
     /**
      * The M scroll view.
      */
-    @BindView(R.id.near_by_scrollView)
+    @BindView(R.id.scrollView)
     ScrollView mScrollView;
 
     /**
@@ -82,12 +83,8 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
     public abstract String getXiqoqu();
 
     @Override
-    public int getContentViewId() {
-        return R.layout.nearby_good_list_fragment;
-    }
-
-    @Override
     public void initView() {
+        setupComponent(((MyApp) mContext.getApplicationContext()).getAppComponent());
         userses.set(new ArrayList<User>());
         goodese.set(new ArrayList<Goods>());
         adapter.set(new ExpandableListViewAdapter(mContext, goodese.get(), userses.get()));
@@ -133,7 +130,8 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
     public void parseUser(List<User> users, List<Goods> goodses) {
         if ((goodses.isEmpty() || users.isEmpty())) {//没有数据
             mScrollView.setVisibility(View.GONE);
-            mGoodsEmptyTextview.setVisibility(View.VISIBLE);;
+            mGoodsEmptyTextview.setVisibility(View.VISIBLE);
+            ;
         } else {
             this.userses.get().clear();
             this.goodese.get().clear();
@@ -148,7 +146,6 @@ public abstract class BaseNearByFragment extends BaseTpgFrament implements NearB
      *
      * @param appComponent the app component
      */
-    @Override
     protected void setupComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)
