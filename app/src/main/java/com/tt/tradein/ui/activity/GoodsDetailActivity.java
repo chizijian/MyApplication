@@ -1,6 +1,7 @@
 package com.tt.tradein.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -104,51 +105,7 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     @BindView(R.id.textView_Buy)
     TextView buy;
-    /**
-     * The M goods details dot one.
-     */
-    @BindView(R.id.goods_details_dot_one)
-    View mGoodsDetailsDotOne;
-    /**
-     * The M goods details dot two.
-     */
-    @BindView(R.id.goods_details_dot_two)
-    View mGoodsDetailsDotTwo;
-    /**
-     * The M goods details dot three.
-     */
-    @BindView(R.id.goods_details_dot_three)
-    View mGoodsDetailsDotThree;
-    /**
-     * The M goods details dot four.
-     */
-    @BindView(R.id.goods_details_dot_four)
-    View mGoodsDetailsDotFour;
-    /**
-     * The M goods details dot five.
-     */
-    @BindView(R.id.goods_details_dot_five)
-    View mGoodsDetailsDotFive;
-    /**
-     * The M goods details dot six.
-     */
-    @BindView(R.id.goods_details_dot_six)
-    View mGoodsDetailsDotSix;
-    /**
-     * The M goods details dot seven.
-     */
-    @BindView(R.id.goods_details_dot_seven)
-    View mGoodsDetailsDotSeven;
-    /**
-     * The M goods details dot eight.
-     */
-    @BindView(R.id.goods_details_dot_eight)
-    View mGoodsDetailsDotEight;
-    /**
-     * The M goods details dot nine.
-     */
-    @BindView(R.id.goods_details_dot_nine)
-    View mGoodsDetailsDotNine;
+
     /**
      * The M goods details dots ll.
      */
@@ -162,6 +119,10 @@ public class GoodsDetailActivity extends BaseActivity {
 
     private Goods mGoods;//当前商品
     private User mUsers;//发布者
+
+    private final int ADD=0;
+    private final int REMOVE=1;
+
     /**
      * The Is favor.
      */
@@ -291,40 +252,11 @@ public class GoodsDetailActivity extends BaseActivity {
     }
 
     private void add2favor() {
-
-        User user = BmobUser.getCurrentUser(GoodsDetailActivity.this, User.class);
-        if (user == null) {
-            Toast.makeText(GoodsDetailActivity.this, "请先登录", Toast.LENGTH_LONG).show();
-            UIUtils.nextPage(this, LoginActivity.class);
-            return;
-        }
-        //user.setObjectId(mUsers.getObjectId());
-        BmobRelation relation = new BmobRelation();
-
         if (!isFavor) {
-            relation.add(mGoods);
-            img_favor.setImageResource(R.mipmap.icon_favor);
+            handler.sendEmptyMessage(ADD);
         } else {
-            relation.remove(mGoods);
-            img_favor.setImageResource(R.mipmap.icon_unfavor);
+            handler.sendEmptyMessage(REMOVE);
         }
-        //user.setAge(200);
-        user.setLikes(relation);
-        user.update(GoodsDetailActivity.this, new UpdateListener() {
-            @Override
-            public void onSuccess() {
-                Log.e(TAG, "onSuccess: ");
-                if (!isFavor)
-                    Toast.makeText(GoodsDetailActivity.this, "已添加到我的收藏", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(GoodsDetailActivity.this, "已移出我的收藏", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Log.e(TAG, "onFailure: ");
-            }
-        });
         isFavor = !isFavor;
     }
 
@@ -380,7 +312,7 @@ public class GoodsDetailActivity extends BaseActivity {
         });
 
     }
-
+    /*二手商品评论*/
     private void ShowSecondHandGoodsMessage(){
 
         mQiugouSellerList.setVisibility(View.GONE);
@@ -418,7 +350,8 @@ public class GoodsDetailActivity extends BaseActivity {
             }
         });
     }
-    
+
+    /*求购商品卖家回复*/
     private void ShowQiuGouGoodsMessage(){
        mQiugouSellerList.setVisibility(View.VISIBLE);
         messagelist.setVisibility(View.GONE);
@@ -427,16 +360,14 @@ public class GoodsDetailActivity extends BaseActivity {
         query.addWhereEqualTo("is_qiugou_seller",true);
         query.addWhereEqualTo("qiugou_goods_id",mGoods.getObjectId());
         query.include("user");
-        query.findObjects(getApplicationContext(), new FindListener<Goods>() {
+        query.findObjects(this, new FindListener<Goods>() {
             @Override
             public void onSuccess(final List<Goods> list) {
                 final List<User> users=new ArrayList<>();
                 for (Goods goods:list
                      ) {
                     users.add(goods.getUser());
-                    //Log.e(TAG, "onSuccess: "+"goods="+goods.getObjectId()+"  user="+goods.getUser().getObjectId());
                 }
-               // Log.e(TAG, "onSuccess: "+"获取求购回复列表成功" );
                 ExpandableListViewAdapter adapter=new ExpandableListViewAdapter(GoodsDetailActivity.this,list,users);
                 mQiugouSellerList.setAdapter(adapter);
                 for (int i=0;i<adapter.getGroupCount();i++){
@@ -472,4 +403,49 @@ public class GoodsDetailActivity extends BaseActivity {
             }
         });
     }
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            BmobRelation relation = new BmobRelation();
+            switch (msg.what){
+                case ADD:
+                    relation.add(mGoods);
+                    img_favor.setImageResource(R.mipmap.icon_favor);
+                    updateFavor(relation);
+                    break;
+                case REMOVE:
+                    relation.remove(mGoods);
+                    img_favor.setImageResource(R.mipmap.icon_unfavor);
+                    updateFavor(relation);
+                    break;
+            }
+        }
+    };
+    private void updateFavor(BmobRelation bmobRelation){
+        User user = BmobUser.getCurrentUser(GoodsDetailActivity.this, User.class);
+        if (user == null) {
+            Toast.makeText(GoodsDetailActivity.this, "请先登录", Toast.LENGTH_LONG).show();
+            UIUtils.nextPage(this, LoginActivity.class);
+            return;
+        }
+
+        user.setLikes(bmobRelation);
+        user.update(GoodsDetailActivity.this, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                Log.e(TAG, "onSuccess: ");
+                if (isFavor)
+                    Toast.makeText(GoodsDetailActivity.this, "已添加到我的收藏", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(GoodsDetailActivity.this, "已移出我的收藏", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.e(TAG, "onFailure: ");
+            }
+        });
+    }
+
 }
