@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/loginColorBg"
-    tools:context="com.tt.tradein.ui.activity.LoginActivity">
+    tools:context="com.tt.czj.ui.activity.LoginActivity">
     <ImageView
         android:id="@+id/login_top_image"
         android:layout_width="match_parent"

@@ -99,12 +99,12 @@
                         android:background="@drawable/indictor_shape_normal"></View>
                 </LinearLayout>
 
-                <com.tt.tradein.widget.ImageFlipper
+                <com.tt.czj.widget.ImageFlipper
                     android:id="@+id/imageFliper"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                </com.tt.tradein.widget.ImageFlipper>
+                </com.tt.czj.widget.ImageFlipper>
             </FrameLayout>
 
             <!--<LinearLayout

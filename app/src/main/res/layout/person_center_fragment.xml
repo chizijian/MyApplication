@@ -23,7 +23,7 @@
         android:layout_marginTop="5dp"
         android:background="@color/colorWhite">
 
-        <com.tt.tradein.widget.CircleImageView
+        <com.tt.czj.widget.CircleImageView
             android:id="@+id/person_center_photo"
             android:layout_width="90dp"
             android:layout_height="90dp"

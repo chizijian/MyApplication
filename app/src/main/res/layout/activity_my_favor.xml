@@ -7,7 +7,7 @@
     android:clipToPadding="true"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.tt.tradein.ui.activity.own.MyFavorActivity">
+    tools:context="com.tt.czj.ui.activity.own.MyFavorActivity">
     <RelativeLayout
         android:background="@color/topBarBgColor"
         android:id="@+id/favor_goods_detail_top"

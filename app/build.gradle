@@ -21,13 +21,13 @@ buildscript {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.tt.tradein"
+        applicationId "com.tt.czj"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -46,11 +46,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile('com.android.support:support-v4:25.1.0') {
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile('com.android.support:support-v4:25.3.0') {
         force = true;
     }
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:design:25.3.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     /*transparent statusbar*/
@@ -62,14 +62,16 @@ dependencies {
     /*rxjava*/
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
+
+    /*dagger2*/
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.google.dagger:dagger:2.5'
+
     /*butterknife*/
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     /*rxbinding*/
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    /*dagger2*/
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.2'
-    compile 'com.google.dagger:dagger:2.2'
 
     /*recyclerview*/
     compile('com.android.support:recyclerview-v7:23.4.0') {
@@ -78,7 +80,7 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'cn.bmob.android:bmob-sdk:3.4.7'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.okio:okio:1.7.0'
     //bmob-sms ：Bmob单独为短信服务提供的包
     compile 'cn.bmob.android:bmob-sms:1.0.1'

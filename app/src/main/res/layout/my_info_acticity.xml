@@ -40,7 +40,7 @@
                 android:layout_marginRight="5dp"
                 android:src="@mipmap/icon_next" />
 
-            <com.tt.tradein.widget.CircleImageView
+            <com.tt.czj.widget.CircleImageView
                 android:id="@+id/info_person_center_photo"
                 android:layout_width="20dp"
                 android:layout_height="30dp"

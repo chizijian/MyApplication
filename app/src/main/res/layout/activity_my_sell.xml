@@ -6,7 +6,7 @@
     android:clipToPadding="true"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.tt.tradein.ui.activity.own.MysellActivity">
+    tools:context="com.tt.czj.ui.activity.own.MysellActivity">
     <RelativeLayout
         android:background="@color/topBarBgColor"
         android:id="@+id/sell_goods_detail_top"
@@ -31,7 +31,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.tt.tradein.widget.CustomExpandableListView
+        <com.tt.czj.widget.CustomExpandableListView
             android:id="@+id/my_sell_goods_list"
             android:focusable="false"
             android:layout_width="match_parent"

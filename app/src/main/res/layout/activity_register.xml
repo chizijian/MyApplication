@@ -7,7 +7,7 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.tt.tradein.ui.activity.RegisterActivity">
+    tools:context="com.tt.czj.ui.activity.RegisterActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/activity_register_name"
+            android:text="注册"
             android:textColor="@color/colorWhite" />
     </RelativeLayout>
 
@@ -246,7 +246,7 @@
             android:layout_height="@dimen/activity_register_edittext_height"
             android:background="@null"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
-            android:hint="年龄"
+            android:hint="支付宝"
             android:maxLength="20" />
     </LinearLayout>
 
@@ -260,7 +260,7 @@
         android:layout_marginTop="@dimen/activity_login_btn_margin_top"
         android:background="@color/topBarBgColor"
         android:gravity="center"
-        android:text="@string/activity_login"
+        android:text="注册"
         android:textColor="@color/colorWhite"
         android:textSize="14sp" />
 </LinearLayout>

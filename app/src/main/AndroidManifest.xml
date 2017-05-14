@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tt.tradein">
+    package="com.tt.czj">
     <!-- BmobSDK权限 -->
     <!--允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -53,14 +53,14 @@
         android:smallScreens="true" />
 
     <application
-        android:name="com.tt.tradein.app.MyApp"
+        android:name="com.tt.czj.app.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name="com.tt.tradein.ui.activity.MainActivity"
+            android:name="com.tt.czj.ui.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,18 +69,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tt.tradein.ui.activity.GuidePageActivity"
+            android:name="com.tt.czj.ui.activity.GuidePageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tt.tradein.ui.activity.SplashActivity"
+            android:name="com.tt.czj.ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name="com.tt.tradein.ui.activity.PublishGoodsActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.LoginActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.RegisterActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.SettingsActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.SearchActivity" />
+        <activity android:name="com.tt.czj.ui.activity.PublishGoodsActivity" />
+        <activity android:name="com.tt.czj.ui.activity.LoginActivity" />
+        <activity android:name="com.tt.czj.ui.activity.RegisterActivity" />
+        <activity android:name="com.tt.czj.ui.activity.SettingsActivity" />
+        <activity android:name="com.tt.czj.ui.activity.SearchActivity" />
         <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -101,7 +101,7 @@
             android:theme="@style/Theme.UMDefault" />
         <!-- 微信 -->
         <activity
-            android:name="com.tt.tradein.wxapi.WXEntryActivity"
+            android:name="com.tt.czj.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -117,32 +117,32 @@
             android:name="com.sina.weibo.sdk.net.DownloadService"
             android:exported="false" />
 
-        <activity android:name="com.tt.tradein.ui.activity.ForgetPassActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.own.MyPublishActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.own.MyQiuGouActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.own.MyFavorActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.AllKindActivity"></activity>
+        <activity android:name="com.tt.czj.ui.activity.ForgetPassActivity" />
+        <activity android:name="com.tt.czj.ui.activity.own.MyPublishActivity" />
+        <activity android:name="com.tt.czj.ui.activity.own.MyQiuGouActivity" />
+        <activity android:name="com.tt.czj.ui.activity.own.MyFavorActivity" />
+        <activity android:name="com.tt.czj.ui.activity.AllKindActivity"></activity>
         <activity
-            android:name="com.tt.tradein.photogallery.activity.AlbumActivity"
+            android:name="com.tt.czj.photogallery.activity.AlbumActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.tt.tradein.photogallery.activity.ImageFile" />
-        <activity android:name="com.tt.tradein.photogallery.activity.ShowAllPhoto" />
-        <activity android:name="com.tt.tradein.ui.activity.setting.AboutUsActivity" />
-        <activity android:name="com.tt.tradein.ui.activity.setting.HelpAndSuggestionActivity"></activity>
-        <activity android:name="com.tt.tradein.ui.activity.KindActivity"></activity>
-        <activity android:name="com.tt.tradein.ui.activity.SecondKindActivity"></activity>
-        <activity android:name="com.tt.tradein.ui.activity.SearchResultActivity"></activity>
-        <activity android:name="com.tt.tradein.ui.activity.GoodsDetailActivity"
+        <activity android:name="com.tt.czj.photogallery.activity.ImageFile" />
+        <activity android:name="com.tt.czj.photogallery.activity.ShowAllPhoto" />
+        <activity android:name="com.tt.czj.ui.activity.setting.AboutUsActivity" />
+        <activity android:name="com.tt.czj.ui.activity.setting.HelpAndSuggestionActivity"></activity>
+        <activity android:name="com.tt.czj.ui.activity.KindActivity"></activity>
+        <activity android:name="com.tt.czj.ui.activity.SecondKindActivity"></activity>
+        <activity android:name="com.tt.czj.ui.activity.SearchResultActivity"></activity>
+        <activity android:name="com.tt.czj.ui.activity.GoodsDetailActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name="com.tt.tradein.ui.activity.LeaveMessageActivity"></activity>
-        <activity android:name="com.tt.tradein.ui.activity.BmobPay.BmobPayActivity"
+        <activity android:name="com.tt.czj.ui.activity.LeaveMessageActivity"></activity>
+        <activity android:name="com.tt.czj.ui.activity.BmobPay.BmobPayActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name="com.tt.tradein.ui.activity.own.MyInfoActivity"
+        <activity android:name="com.tt.czj.ui.activity.own.MyInfoActivity"
             android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name="com.tt.tradein.ui.activity.own.MyOrderActivity"
+        <activity android:name="com.tt.czj.ui.activity.own.MyOrderActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name="com.tt.tradein.ui.activity.own.MysellActivity"
+        <activity android:name="com.tt.czj.ui.activity.own.MysellActivity"
         android:windowSoftInputMode="adjustResize"/>
 
 
