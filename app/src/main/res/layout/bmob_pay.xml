@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bmob_pay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,8 +21,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:src="@mipmap/back"
-            android:contentDescription="" />
+            android:src="@mipmap/back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,24 +35,18 @@
         android:id="@+id/pay_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_below="@id/bmob_pay_top"
-        android:layout_centerHorizontal="true"
         android:background="@color/colorWhite"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/bmob_pay_top"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/pay_goods_detail_image_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginTop="5dp"></android.support.v7.widget.RecyclerView>
-        <!--<com.tt.tradein.widget.HorizontalListView
-        android:id="@+id/goods_detail_image_grid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-    </com.tt.tradein.widget.HorizontalListView>-->
+            android:layout_marginTop="5dp" />
         <TextView
             android:id="@+id/pay_goods_detail_title"
             android:layout_width="match_parent"
@@ -68,7 +60,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorBg"></View>
+            android:background="@color/colorBg" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -86,12 +78,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
-            android:background="@color/colorBg"></View>
+            android:background="@color/colorBg" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -104,11 +97,13 @@
                 android:hint="收货地址"/>
 
         </RelativeLayout>
+
         <RadioGroup
             android:id="@+id/type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/alipay"
@@ -126,7 +121,8 @@
                 android:layout_gravity="right|end"
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
-                android:text="微信" />
+                android:text="微信"
+                android:visibility="gone" />
 
         </RadioGroup>
 

@@ -113,10 +113,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <service
-            android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false" />
-
         <activity android:name="com.tt.czj.ui.activity.ForgetPassActivity" />
         <activity android:name="com.tt.czj.ui.activity.own.MyPublishActivity" />
         <activity android:name="com.tt.czj.ui.activity.own.MyQiuGouActivity" />

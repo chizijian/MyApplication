@@ -27,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      */
     public static final String TAG = "BaseActivity";
 
+
     /**
      * Gets content view id.
      *

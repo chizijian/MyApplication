@@ -1,13 +1,11 @@
 package com.tt.czj.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tt.czj.R;
 import com.tt.czj.app.MyApp;
@@ -15,12 +13,13 @@ import com.tt.czj.di.component.AppComponent;
 import com.tt.czj.di.component.DaggerLeaveMessageComponent;
 import com.tt.czj.di.modules.LeaveMessageActivityModule;
 import com.tt.czj.mvp.models.Goods;
-import com.tt.czj.mvp.models.Message;
 import com.tt.czj.mvp.models.User;
 import com.tt.czj.mvp.presenter.LeaveMessagePresenter;
-import com.tt.czj.mvp.presenter.LeaveMessagePresenterlmpl;
 import com.tt.czj.mvp.views.LeaveMessageActivityView;
 import com.tt.czj.ui.activity.base.BaseActivity;
+import com.tt.czj.utils.ToastUtil;
+import com.tt.czj.utils.ToolsUtils;
+import com.tt.czj.utils.UIUtils;
 
 import javax.inject.Inject;
 
@@ -55,7 +54,7 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
      * The Leave message presenter.
      */
     @Inject
-    LeaveMessagePresenter leaveMessagePresenter=new LeaveMessagePresenterlmpl(this);
+    LeaveMessagePresenter leaveMessagePresenter;
 
     /**
      * The M goods.
@@ -82,6 +81,19 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
     }
 
     /**
+     * Sets component.
+     *
+     * @param appComponent the app component
+     */
+    protected void setupComponent(AppComponent appComponent) {
+        DaggerLeaveMessageComponent
+                .builder()
+                .appComponent(appComponent)
+                .leaveMessageActivityModule(new LeaveMessageActivityModule(this))
+                .build()
+                .inject(this);
+    }
+    /**
      * On click.
      *
      * @param v the v
@@ -91,13 +103,6 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
         switch (v.getId()) {
             case R.id.leave_message_textView:
                 saveMessage(mLeaveMessageEdit.getText().toString());
-                Intent intent = new Intent(this,GoodsDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Goods",mGoods);
-                bundle.putSerializable("User",mUsers);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                fileList();
                 break;
             case R.id.leave_message_back:
                 break;
@@ -109,12 +114,10 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
     }
 
     private void saveMessage(String message){
-        if(message==null){
-            Toast.makeText(this,"未填写评论",Toast.LENGTH_LONG);
-            return;
+        if(ToolsUtils.isNullOrEmpty(message)){
+            ToastUtil.showToast(this,"未填写评论");
         }
         else {
-            Message m=new Message();
             mGoods = (Goods) getIntent().getSerializableExtra("Goods");
             mUsers = (User) getIntent().getSerializableExtra("User");
             leaveMessagePresenter.leaveMessage(this,mUsers.getObjectId(),message,mGoods.getObjectId());
@@ -123,24 +126,16 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
 
     @Override
     public void leaveMessageSuccess() {
-
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Goods",mGoods);
+        bundle.putSerializable("User",mUsers);
+        UIUtils.nextPage(this,GoodsDetailActivity.class,bundle);
+        finish();
     }
 
     @Override
     public void leaveMessageError(String str) {
-
+        ToastUtil.showToast(this,str);
     }
 
-    /**
-     * Sets component.
-     *
-     * @param appComponent the app component
-     */
-    protected void setupComponent(AppComponent appComponent) {
-        DaggerLeaveMessageComponent.builder()
-                .appComponent(appComponent)
-                .leaveMessageActivityModule(new LeaveMessageActivityModule(this))
-                .build()
-                .inject(this);
-    }
 }

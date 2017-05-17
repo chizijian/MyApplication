@@ -3,16 +3,11 @@ package com.tt.czj.mvp.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.tt.czj.mvp.models.Goods;
 import com.tt.czj.mvp.models.Message;
 import com.tt.czj.mvp.models.User;
 import com.tt.czj.mvp.views.LeaveMessageActivityView;
 
-import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -35,52 +30,19 @@ public class LeaveMessagePresenterlmpl implements LeaveMessagePresenter {
         final Message mMessage=new Message();
         mMessage.setMessage(message);
         mMessage.setMessage_Goodsid(Message_Goodsid);
-
-        User sender=BmobUser.getCurrentUser(context,User.class);
-
-        mMessage.setSendMessage_id(sender.getObjectId());
-
-        BmobQuery<Goods> bmobQuery=new BmobQuery<Goods>();
-        bmobQuery.addWhereEqualTo("objectId",Message_Goodsid);
-        bmobQuery.findObjects(context, new FindListener<Goods>() {
-            @Override
-            public void onSuccess(List<Goods> list) {
-                for (Goods g:list
-                     ) {
-                    BmobQuery<User> UserQuery=new BmobQuery<User>();
-                    UserQuery.addWhereEqualTo("objectId",g.getUserid());
-                    UserQuery.findObjects(context, new FindListener<User>() {
-                        @Override
-                        public void onSuccess(List<User> list) {
-                            for (User user:list
-                                 ) {
-                                mMessage.setAcceptMessage_id(user.getObjectId());
-                            }
-                        }
-
-                        @Override
-                        public void onError(int i, String s) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
-            }
-        });
+        mMessage.setSendMessage_id(BmobUser.getCurrentUser(context,User.class).getObjectId());
+        mMessage.setAcceptMessage_id(accepter);
 
         mMessage.save(context, new SaveListener() {
             @Override
             public void onSuccess() {
+                view.leaveMessageSuccess();
                 Log.e("LeaveMessage", "onSuccess" );
             }
 
             @Override
             public void onFailure(int i, String s) {
-
+                view.leaveMessageError(s);
             }
         });
     }

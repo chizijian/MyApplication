@@ -24,4 +24,5 @@
     <dimen name="activity_my_order_for_goods_activity_top_item_margin_left">30dp</dimen>
     <dimen name="activity_home_fragment_imageview_margin">5dp</dimen>
     <dimen name="ui_10_dip">10dip</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
