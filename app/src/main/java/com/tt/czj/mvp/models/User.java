@@ -13,6 +13,16 @@ public class User extends BmobUser {
     private String signature;
     private BmobFile photo;
 
+    public String getAlipay() {
+        return alipay;
+    }
+
+    public void setAlipay(String alipay) {
+        this.alipay = alipay;
+    }
+
+    private String alipay;
+
     /**
      * Gets address.
      *

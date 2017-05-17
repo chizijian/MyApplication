@@ -1,5 +1,7 @@
 package com.tt.czj.mvp.views;
 
+import com.tt.czj.mvp.models.User;
+
 /**
  * The interface Register view.
  */
@@ -14,7 +16,7 @@ public interface RegisterView {
     /**
      * Register success.
      */
-    void registerSuccess();
+    void registerSuccess(User user);
 
     /**
      * Register failed.

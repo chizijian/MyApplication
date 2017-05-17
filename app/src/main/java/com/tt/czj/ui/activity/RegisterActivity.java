@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -25,7 +23,6 @@ import com.tt.czj.utils.ToastUtil;
 import com.tt.czj.utils.ToolsUtils;
 import com.tt.czj.utils.UIUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,10 +31,12 @@ import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * The type Register activity.
  */
-public class RegisterActivity extends BaseActivity implements View.OnClickListener, RegisterView {
+public class RegisterActivity extends BaseActivity implements RegisterView {
 
     /**
      * The M back linear layout.
@@ -121,6 +120,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.activity_register_age_ll)
     LinearLayout mActivityRegisterAgeLl;
 
+    @BindView(R.id.activity_register_alipay_edittext)
+    EditText mActivityRegisterAlipayEdittext;
     /**
      * The Xiaoqu list.
      */
@@ -139,7 +140,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      */
     @BindViews({R.id.activity_register_input_username_ll,
             R.id.activity_register_sex_ll, R.id.activity_register_xiaoqu_ll,
-            R.id.activity_register_age_ll, R.id.activity_register_confirm_input_ll})
+            R.id.activity_register_age_ll, R.id.activity_register_confirm_input_ll, R.id.activity_register_alipay_ll})
     List<LinearLayout> linearLayoutList;
 
     private String phoneNum;
@@ -149,9 +150,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      */
     @Inject
     RegisterActivityPresenter presenter;
-
-
-    private String sex, xiaoqu;
 
     @Override
     public int getContentViewId() {
@@ -179,8 +177,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void initData() {
-        mSureTextView.setOnClickListener(this);
-        mBackLinearLayout.setOnClickListener(this);
         switch (mWorkStateMode) {
             case GlobalDefineValues.RegisterActivityWorkFirstStep: {
                 processInputPhoneNumber();
@@ -205,19 +201,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mInputCheckNumberTextView.setSelected(false);
         mSetPassWordTextView.setSelected(false);
 
-
-       /* mInputUserNameLL.setVisibility(View.GONE);
-        mConfirmPassWordLL.setVisibility(View.GONE);
-        mActivityRegisterSexLl.setVisibility(View.GONE);
-        mActivityRegisterXiaoquLl.setVisibility(View.GONE);
-        mActivityRegisterAgeLl.setVisibility(View.GONE);*/
-        ButterKnife.apply(linearLayoutList, new ButterKnife.Action<LinearLayout>() {
-            @Override
-            public void apply(@NonNull LinearLayout view, int index) {
-                view.setVisibility(View.GONE);
-            }
-        });
-
+        setVisibility(View.GONE);
         mSureTextView.setText(R.string.activity_register_get_check_sms);
 
         mInputEditText.setHint(R.string.activity_register_please_input_your_phone_number);
@@ -240,45 +224,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mConfirmPassWordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         mConfirmPassWordEditText.setHint(R.string.activity_register_please_confirm_password);
 
-        ButterKnife.apply(linearLayoutList, new ButterKnife.Action<LinearLayout>() {
-            @Override
-            public void apply(@NonNull LinearLayout view, int index) {
-                view.setVisibility(View.VISIBLE);
-            }
-        });
-
-        ArrayAdapter<String> sexAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.asList(sexList));
-        ArrayAdapter<String> xiaoquAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.asList(xiaoquList));
-        sexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        xiaoquAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mActivityRegisterSexSpinner.setAdapter(sexAdapter);
-        mActivityRegisterXiaoquSpinner.setAdapter(xiaoquAdapter);
-
-        mActivityRegisterSexSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<String> adapter = (ArrayAdapter<String>) parent.getAdapter();
-                sex = adapter.getItem(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        mActivityRegisterXiaoquSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<String> adapter = (ArrayAdapter<String>) parent.getAdapter();
-                xiaoqu = adapter.getItem(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        setVisibility(View.VISIBLE);
     }
 
     /**
@@ -289,17 +235,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mInputPhoneTextView.setSelected(false);
         mSetPassWordTextView.setSelected(false);
 
-       /* mInputUserNameLL.setVisibility(View.GONE);
-        mConfirmPassWordLL.setVisibility(View.GONE);
-        mActivityRegisterSexLl.setVisibility(View.GONE);
-        mActivityRegisterXiaoquLl.setVisibility(View.GONE);
-        mActivityRegisterAgeLl.setVisibility(View.GONE);*/
-        ButterKnife.apply(linearLayoutList, new ButterKnife.Action<LinearLayout>() {
-            @Override
-            public void apply(@NonNull LinearLayout view, int index) {
-                view.setVisibility(View.GONE);
-            }
-        });
+        setVisibility(View.GONE);
 
         mSureTextView.setText(R.string.activity_register_check_string);
 
@@ -320,14 +256,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             ToastUtil.showToast(this, "两次输入密码不一致！");
         } else if (!ToolsUtils.isCorrectUserPwd(mInputEditText.getText().toString())) {
             ToastUtil.showToast(this, "密码应为6-18位，由字母数字下划线组成");
-        } else if (ToolsUtils.isNullOrEmpty(mActivityRegisterAgeEdittext.getText().toString()) || ToolsUtils.isNullOrEmpty(sex) || ToolsUtils.isNullOrEmpty(xiaoqu)) {
+        } else if (ToolsUtils.isNullOrEmpty(mActivityRegisterAgeEdittext.getText().toString()) || ToolsUtils.isNullOrEmpty(mActivityRegisterSexSpinner.getSelectedItem().toString()) || ToolsUtils.isNullOrEmpty(mActivityRegisterXiaoquSpinner.getSelectedItem().toString()) || ToolsUtils.isNullOrEmpty(mActivityRegisterAlipayEdittext.getText().toString())) {
             ToastUtil.showToast(this, "请将信息填写完整");
         } else {
-            presenter.register(this, phoneNum, mUserNameEditText.getText().toString(), mInputEditText.getText().toString(), Integer.parseInt(mActivityRegisterAgeEdittext.getText().toString()), sex, xiaoqu);
+            presenter.register(this, phoneNum, mUserNameEditText.getText().toString(), mInputEditText.getText().toString(), Integer.parseInt(mActivityRegisterAgeEdittext.getText().toString()), mActivityRegisterSexSpinner.getSelectedItem().toString(), mActivityRegisterXiaoquSpinner.getSelectedItem().toString(), mActivityRegisterAlipayEdittext.getText().toString());
         }
     }
 
-    @Override
+    @OnClick({R.id.activity_register_sure_textview, R.id.activity_register_back_ll})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_register_sure_textview: {
@@ -407,5 +343,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         processInputPhoneNumber();
     }
 
+    /**设置要显示的控件*/
+    private void setVisibility(final int state){
+        ButterKnife.apply(linearLayoutList, new ButterKnife.Action<LinearLayout>() {
+            @Override
+            public void apply(@NonNull LinearLayout view, int index) {
+                view.setVisibility(state);
+            }
+        });
+    }
 
 }

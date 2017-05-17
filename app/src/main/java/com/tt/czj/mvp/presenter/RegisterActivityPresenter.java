@@ -44,5 +44,5 @@ public interface RegisterActivityPresenter {
      * @param sex      the sex
      * @param xiaoqu   the xiaoqu
      */
-    void register(Context context,String phone,String username,String pass,Integer age,String sex,String xiaoqu);
+    void register(Context context,String phone,String username,String pass,Integer age,String sex,String xiaoqu,String alipay);
 }
