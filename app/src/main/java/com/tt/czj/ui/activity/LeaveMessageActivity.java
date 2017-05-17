@@ -105,6 +105,7 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
                 saveMessage(mLeaveMessageEdit.getText().toString());
                 break;
             case R.id.leave_message_back:
+                finish();
                 break;
             case R.id.leave_message_top:
                 break;

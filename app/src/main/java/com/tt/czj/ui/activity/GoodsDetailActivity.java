@@ -221,6 +221,9 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     @OnClick({R.id.goods_detail_back, R.id.imageView_favor, R.id.imageView_talk, R.id.textView_Buy})
     public void onClick(View v) {
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("Goods", mGoods);
+        bundle.putSerializable("User", mUsers);
         switch (v.getId()) {
             case R.id.goods_detail_back:
                 finish();
@@ -229,23 +232,21 @@ public class GoodsDetailActivity extends BaseActivity {
                 add2favor();
                 break;
             case R.id.imageView_talk:
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Goods", mGoods);
-                bundle.putSerializable("User", mUsers);
-                UIUtils.nextPage(this,LeaveMessageActivity.class,bundle);
+                if (buy.getText().toString().equals("立即购买")) {
+                    UIUtils.nextPage(this,BmobPayActivity.class,bundle);
+                }
+                else {
+                    bundle.putString("source","qiugou_seller");
+                    UIUtils.nextPage(this,PublishGoodsActivity.class,bundle);
+                }
                 break;
             case R.id.textView_Buy:
                 if (buy.getText().toString().equals("立即购买")) {
-                    Bundle bundlebuy = new Bundle();
-                    bundlebuy.putSerializable("Goods", mGoods);
-                    bundlebuy.putSerializable("User", mUsers);
-                    UIUtils.nextPage(this,BmobPayActivity.class,bundlebuy);
+                    UIUtils.nextPage(this,BmobPayActivity.class,bundle);
                 }
                 else {
-                    Bundle bundle2 = new Bundle();
-                    bundle2.putString("source","qiugou_seller");
-                    bundle2.putSerializable("Goods", mGoods);
-                    UIUtils.nextPage(this,PublishGoodsActivity.class,bundle2);
+                    bundle.putString("source","qiugou_seller");
+                    UIUtils.nextPage(this,PublishGoodsActivity.class,bundle);
                 }
                 break;
         }
