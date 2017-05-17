@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.UpdateListener;
@@ -32,6 +34,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2017/5/02/0002.
  */
 public class ChangePhotoUtil {
+    private User user;
     private  Context mContext;
 
     /**
@@ -54,7 +57,8 @@ public class ChangePhotoUtil {
         return this;
     }
 
-    private Activity activity;
+    private Activity activity=null;
+    private Fragment fragment=null;
     private static final int TAKE_PICTURE = 1;
     private static final int TAKE_PHOTO = 2;
     private static final int CROP_PHOTO = 3;
@@ -74,6 +78,11 @@ public class ChangePhotoUtil {
         this.mPersonCenterPhoto = mPersonCenterPhoto;
     }
 
+    public ChangePhotoUtil(Context mContext, Fragment fragment, CircleImageView mPersonCenterPhoto) {
+        this.fragment=fragment;
+        this.mContext = mContext;
+        this.mPersonCenterPhoto = mPersonCenterPhoto;
+    }
     /**
      * Gets context.
      *
@@ -132,15 +141,18 @@ public class ChangePhotoUtil {
         dialog.setView(view);
         dialog.show();
 
-        TextView tv_select_gallery = (TextView) view.findViewById(R.id.tv_select_gallery);
-        TextView tv_select_camera = (TextView) view.findViewById(R.id.tv_select_camera);
-        TextView tv_select_cancle = (TextView) view.findViewById(R.id.tv_cancle_camera);
+        TextView tv_select_gallery = ButterKnife.findById(view,R.id.tv_select_gallery);
+        TextView tv_select_camera =  ButterKnife.findById(view,R.id.tv_select_camera);
+        TextView tv_select_cancle =  ButterKnife.findById(view,R.id.tv_cancle_camera);
         tv_select_gallery.setOnClickListener(new View.OnClickListener() {// 在相册中选取
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(Intent.ACTION_PICK, null);
                 intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                activity .startActivityForResult(intent1, TAKE_PICTURE);
+                if(activity!=null)
+                    activity .startActivityForResult(intent1, TAKE_PICTURE);
+                else if(fragment!=null)
+                    fragment.startActivityForResult(intent1, TAKE_PICTURE);
                 dialog.dismiss();
             }
         });
@@ -150,7 +162,10 @@ public class ChangePhotoUtil {
                 Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent2.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "head.jpg")));
-                activity.startActivityForResult(intent2, TAKE_PHOTO);// 采用ForResult打开
+                if(activity!=null)
+                    activity .startActivityForResult(intent2, TAKE_PHOTO);
+                else if(fragment!=null)
+                    fragment.startActivityForResult(intent2, TAKE_PHOTO);
                 dialog.dismiss();
             }
         });
@@ -176,7 +191,6 @@ public class ChangePhotoUtil {
                 if (resultCode == RESULT_OK) {
                     cropPhoto(data.getData());// 裁剪图片
                 }
-
                 break;
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
@@ -189,7 +203,8 @@ public class ChangePhotoUtil {
                     Bundle extras = data.getExtras();
                     Bitmap head = extras.getParcelable("data");
                     if (head != null) {
-                        User user= BmobUser.getCurrentUser(mContext,User.class);
+                        if(user==null)
+                            user= BmobUser.getCurrentUser(mContext,User.class);
                         uploadPicture(mContext,head,user);
                         /// personCenterFragmentPresenter.loadPhoto(mContext, user.getPhoto().getUrl());
                         mPersonCenterPhoto.setImageBitmap(head);
@@ -220,7 +235,10 @@ public class ChangePhotoUtil {
         intent.putExtra("outputX", 150);
         intent.putExtra("outputY", 150);
         intent.putExtra("return-data", true);
-        activity.startActivityForResult(intent, CROP_PHOTO);
+        if(activity!=null)
+            activity.startActivityForResult(intent, CROP_PHOTO);
+        else if (fragment!=null)
+            fragment.startActivityForResult(intent, CROP_PHOTO);
     }
 
 

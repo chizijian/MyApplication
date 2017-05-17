@@ -233,7 +233,7 @@ public class GoodsDetailActivity extends BaseActivity {
                 break;
             case R.id.imageView_talk:
                 if (buy.getText().toString().equals("立即购买")) {
-                    UIUtils.nextPage(this,BmobPayActivity.class,bundle);
+                    UIUtils.nextPage(this,LeaveMessageActivity.class,bundle);
                 }
                 else {
                     bundle.putString("source","qiugou_seller");

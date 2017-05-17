@@ -213,6 +213,7 @@ public class BmobPayActivity extends BaseActivity implements RadioGroup.OnChecke
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pay_goods_detail_back:
+                finish();
                 break;
             case R.id.bmob_pay_top:
                 break;

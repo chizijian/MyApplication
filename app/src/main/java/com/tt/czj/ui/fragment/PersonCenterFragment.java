@@ -178,7 +178,7 @@ public class PersonCenterFragment extends Fragment implements PersonCenterView,O
             mLoginRightNowRl.setVisibility(View.GONE);
             mLoginedRl.setVisibility(View.VISIBLE);
             if (user.getPhoto() != null) {
-                mPersonCenterPhoto.setImageUrl(user.getPhoto().getUrl(), TakePhotoUtil.getmImageLoader(mContext));
+                mPersonCenterPhoto.setImageUrl(user.getPhoto().getUrl(), TakePhotoUtil.getmImageLoader(this.getContext()));
             } else {
                 mPersonCenterPhoto.setImageResource(R.mipmap.icon_photo);
             }
@@ -206,8 +206,9 @@ public class PersonCenterFragment extends Fragment implements PersonCenterView,O
         User user = BmobUser.getCurrentUser(mContext, User.class);
         switch (view.getId()) {
             case R.id.person_center_photo:
-                changePhotoUtil = new ChangePhotoUtil(mContext, this.getActivity(), mPersonCenterPhoto);
+                changePhotoUtil = new ChangePhotoUtil(mContext,this, mPersonCenterPhoto);
                 changePhotoUtil.showTypeDialog();
+                break;
             case R.id.my_qiugou_rl:
                 //UIUtils.nextPage(mContext, .class);
                 if (user == null) {
@@ -290,6 +291,15 @@ public class PersonCenterFragment extends Fragment implements PersonCenterView,O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         changePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        User user=BmobUser.getCurrentUser(mContext,User.class);
+        mPersonCenterPhoto.setImageUrl(user.getPhoto().getUrl(), TakePhotoUtil.getmImageLoader(this.getContext()));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        User user=BmobUser.getCurrentUser(mContext,User.class);
+        mPersonCenterPhoto.setImageUrl(user.getPhoto().getUrl(), TakePhotoUtil.getmImageLoader(this.getContext()));
     }
 }
 

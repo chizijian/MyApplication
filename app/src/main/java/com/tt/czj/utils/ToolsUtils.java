@@ -2,17 +2,30 @@ package com.tt.czj.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+
+import com.tt.czj.mvp.models.User;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * The type Tools utils.
@@ -223,7 +236,7 @@ public class ToolsUtils {
      * @param age the age
      * @return the boolean
      */
-    public static boolean cheakAge(String age){
+    public static boolean cheakAge(String age) {
         Pattern p = Pattern.compile("^(?:[1-9][0-9]?|1[01][0-9]|120)$");
         Matcher m = p.matcher((age));
         System.out.println(m.matches() + "-name-");
@@ -277,5 +290,79 @@ public class ToolsUtils {
             intent.setAction(Intent.ACTION_CALL);
             mContext.startActivity(intent);
         }
+    }
+
+    public static void uploadPicture(final Context mContext, Resources resources, int resourcesId, final User user) {
+        final Uri uri = saveBitmap(readBitmapFromResource(resources, resourcesId));
+        final BmobFile file = new BmobFile(new File(uri.getPath()));
+        file.uploadblock(mContext, new UploadFileListener() {
+            @Override
+            public void onSuccess() {
+                user.setPhoto(file);
+                user.update(mContext, new UpdateListener() {
+                    @Override
+                    public void onSuccess() {
+                        ToastUtil.showToast(mContext, "保存成功");
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
+    }
+
+    private static Uri saveBitmap(Bitmap bm) {
+        File tmpDir;
+        if (hasSD()) {
+            tmpDir = new File(Environment.getExternalStorageDirectory() + "/tradein/");
+        } else {
+            tmpDir = new File(Environment.getDataDirectory() + "/tradein/");
+        }
+
+        if (!tmpDir.exists()) {
+            tmpDir.mkdir();
+        }
+        File img = new File(tmpDir.getAbsolutePath() + System.currentTimeMillis() + ".png");
+        try {
+            FileOutputStream fos = new FileOutputStream(img);
+            bm.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+            return Uri.fromFile(img);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 是否有SD卡
+     */
+    private static boolean hasSD() {
+        //如果有SD卡 则下载到SD卡中
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+
+        } else {
+            //如果没有SD卡
+            return false;
+        }
+    }
+
+    private static Bitmap readBitmapFromResource(Resources resources, int resourcesId) {
+        InputStream ins = resources.openRawResource(resourcesId);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeStream(ins, null, options);
     }
 }

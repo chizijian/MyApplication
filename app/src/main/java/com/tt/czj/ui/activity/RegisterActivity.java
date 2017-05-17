@@ -27,7 +27,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -122,18 +121,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
     @BindView(R.id.activity_register_alipay_edittext)
     EditText mActivityRegisterAlipayEdittext;
-    /**
-     * The Xiaoqu list.
-     */
-    @BindArray(R.array.xiaoqu)
-    String[] xiaoquList;
-
-
-    /**
-     * The Sex list.
-     */
-    @BindArray(R.array.sex)
-    String[] sexList;
 
     /**
      * The Linear layout list.

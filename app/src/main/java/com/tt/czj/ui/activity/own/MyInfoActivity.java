@@ -219,6 +219,7 @@ public class MyInfoActivity extends BaseActivity {
                         }
                     });
                 }
+                break;
         }
     }
 
