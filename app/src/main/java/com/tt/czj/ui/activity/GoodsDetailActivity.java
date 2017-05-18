@@ -234,12 +234,12 @@ public class GoodsDetailActivity extends BaseActivity {
             case R.id.imageView_talk:
                 if (buy.getText().toString().equals("立即购买")) {
                     UIUtils.nextPage(this,LeaveMessageActivity.class,bundle);
+                   // finish();
                 }
                 else {
                     bundle.putString("source","qiugou_seller");
                     UIUtils.nextPage(this,PublishGoodsActivity.class,bundle);
                 }
-                finish();
                 break;
             case R.id.textView_Buy:
                 if (buy.getText().toString().equals("立即购买")) {
@@ -249,7 +249,6 @@ public class GoodsDetailActivity extends BaseActivity {
                     bundle.putString("source","qiugou_seller");
                     UIUtils.nextPage(this,PublishGoodsActivity.class,bundle);
                 }
-                finish();
                 break;
         }
     }
@@ -453,4 +452,13 @@ public class GoodsDetailActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mGoods.isQiugou()) {
+            ShowQiuGouGoodsMessage();
+        }
+        else
+            ShowSecondHandGoodsMessage();
+    }
 }

@@ -19,7 +19,6 @@ import com.tt.czj.mvp.views.LeaveMessageActivityView;
 import com.tt.czj.ui.activity.base.BaseActivity;
 import com.tt.czj.utils.ToastUtil;
 import com.tt.czj.utils.ToolsUtils;
-import com.tt.czj.utils.UIUtils;
 
 import javax.inject.Inject;
 
@@ -127,10 +126,10 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageAc
 
     @Override
     public void leaveMessageSuccess() {
-        Bundle bundle = new Bundle();
+       /* Bundle bundle = new Bundle();
         bundle.putSerializable("Goods",mGoods);
         bundle.putSerializable("User",mUsers);
-        UIUtils.nextPage(this,GoodsDetailActivity.class,bundle);
+        UIUtils.nextPage(this,GoodsDetailActivity.class,bundle);*/
         finish();
     }
 
