@@ -239,6 +239,7 @@ public class GoodsDetailActivity extends BaseActivity {
                     bundle.putString("source","qiugou_seller");
                     UIUtils.nextPage(this,PublishGoodsActivity.class,bundle);
                 }
+                finish();
                 break;
             case R.id.textView_Buy:
                 if (buy.getText().toString().equals("立即购买")) {
@@ -248,6 +249,7 @@ public class GoodsDetailActivity extends BaseActivity {
                     bundle.putString("source","qiugou_seller");
                     UIUtils.nextPage(this,PublishGoodsActivity.class,bundle);
                 }
+                finish();
                 break;
         }
     }
