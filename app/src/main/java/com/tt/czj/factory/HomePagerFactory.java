@@ -10,12 +10,15 @@ import com.yhy.tpg.pager.TpgFragment;
 
 public class HomePagerFactory {
     public static TpgFragment create(int position) {
-        switch (position){
+        TpgFragment tpgFragment = null;
+        switch (position) {
             case 0:
-                return new SecondHandHomeFragment();
+                tpgFragment = new SecondHandHomeFragment();
+                break;
             case 1:
-                return new QiuGouHomeFragment();
+                tpgFragment = new QiuGouHomeFragment();
+                break;
         }
-        return new SecondHandHomeFragment();
+        return tpgFragment;
     }
 }

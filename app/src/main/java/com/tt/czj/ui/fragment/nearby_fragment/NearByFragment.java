@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tt.czj.R;
+import com.tt.czj.ui.activity.KindActivity;
 import com.tt.czj.ui.activity.SearchActivity;
 import com.tt.czj.ui.adapter.FragmentPagerAdapter.MyNearByFragmentPagerAdapter;
 import com.tt.czj.ui.adapter.base.BaseFragmentmentPagerAdapter;
@@ -72,6 +73,8 @@ public class NearByFragment extends Fragment {
     private Context mContext;
     private View mRootView = null;
 
+    private static BaseNearByFragment baseNearByFragment;
+
     /**
      * The M loc client.
      */
@@ -110,6 +113,7 @@ public class NearByFragment extends Fragment {
         mNearByTpgView.setTabGravity(TabLayout.GRAVITY_FILL);
         mNearByTpgView.setTabMode(TabLayout.MODE_FIXED);
         mNearByTpgView.setTabIndicatorHeight(1);
+        mNearByTpgView.setCurrentPager(0);
         mNearByTpgView.setOnPageChangedListener(new TpgView.OnPageChangedListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -118,7 +122,7 @@ public class NearByFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                fragmentAdapter.getItem(position).reloadDate(mCurrentXiaoqu.getSelectedItem().toString());
+                fragmentAdapter.reloadDataForCurrentPager(mCurrentXiaoqu.getSelectedItem().toString());
             }
 
             @Override
@@ -148,15 +152,6 @@ public class NearByFragment extends Fragment {
         mLocClient.start();
     }*/
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden) {
-            Log.e("REFRESH", " shuaxinshuju");
-            // initData();
-        }
-        super.onHiddenChanged(hidden);
-    }
-
-    @Override
     public void onDestroyView() {
         //mLocClient.stop();
         super.onDestroyView();
@@ -172,7 +167,7 @@ public class NearByFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.near_by_item_mode:
-
+                UIUtils.nextPage(mContext, KindActivity.class);
                 break;
             case R.id.near_by_search_imageview:
                 UIUtils.nextPage(mContext, SearchActivity.class);
@@ -186,7 +181,7 @@ public class NearByFragment extends Fragment {
     @OnItemSelected(R.id.current_xiaoqu)
     void onItemSelected() {
         Log.e(TAG, "onItemSelected: " + mCurrentXiaoqu.getSelectedItem().toString());
-        xiaoqu=mCurrentXiaoqu.getSelectedItem().toString();
+        xiaoqu = mCurrentXiaoqu.getSelectedItem().toString();
         fragmentAdapter.reloadDataForCurrentPager(xiaoqu);
     }
 
@@ -230,16 +225,22 @@ public class NearByFragment extends Fragment {
         super.onDestroy();
     }
 
-    public static BaseNearByFragment getInstance(int type){
-        switch (type){
+    public static BaseNearByFragment getInstance(int type) {
+        switch (type) {
             case 0:
-                Log.e(TAG, "getInstance: 二手" );
-                return NearBySecondHandFrangment.newInstance(xiaoqu);
+                Log.e(TAG, "getInstance: 二手");
+                if (baseNearByFragment == null||baseNearByFragment instanceof NearByQiuGouFragment)
+                    baseNearByFragment = NearBySecondHandFrangment.newInstance(xiaoqu);
+
+                break;
             case 1:
-                Log.e(TAG, "getInstance: 求购" );
-                return  NearByQiuGouFragment.newInstance(xiaoqu);
+                Log.e(TAG, "getInstance: 求购");
+                if (baseNearByFragment == null||baseNearByFragment instanceof NearBySecondHandFrangment)
+                    baseNearByFragment = NearByQiuGouFragment.newInstance(xiaoqu);
+                break;
         }
-        return NearBySecondHandFrangment.newInstance(xiaoqu);
+
+        return baseNearByFragment;
     }
 
 }

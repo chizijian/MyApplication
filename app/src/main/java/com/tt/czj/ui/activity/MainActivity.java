@@ -73,7 +73,6 @@ public class MainActivity extends BaseActivity {
     private final int PERSON_VIEW = 3;
 
 
-
     private int mCurrentIndex = 0;
     private int mOldIndex = 0;
 
@@ -83,6 +82,11 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> mFragments;
 
     private FragmentTransaction ft;
+
+    HomeFragment mHomeFragment;//首页
+    NearByFragment mNearByFragment;//附近
+    KindSortFragment mKindSortFragment;//分类
+    PersonCenterFragment mPersonCenterFragment;//我的
 
 
     @Override
@@ -104,18 +108,6 @@ public class MainActivity extends BaseActivity {
         }
 
     }
-
-    /**
-     * 初始化所用到的view；
-     */
-    /*private void initViews() {
-        mViews = new ArrayList<>();
-        mViews.add(mHomeTextView);
-        mViews.add(mNearByTextView);
-        mViews.add(mKindSortTextView);
-        mViews.add(mPersonCenterTextView);
-
-    }*/
 
     /*选择是二手还是求购*/
     private void showTypeDialog() {
@@ -159,16 +151,24 @@ public class MainActivity extends BaseActivity {
      * 初始化用到的Fragment
      */
     private void initFragments() {
-        HomeFragment mHomeFragment = new HomeFragment();
-        NearByFragment mNearByFragment = new NearByFragment();
-        KindSortFragment mKindSortFragment = new KindSortFragment();
-        PersonCenterFragment mPersonCenterFragment = new PersonCenterFragment();
+        mHomeFragment = new HomeFragment();
+        mNearByFragment = new NearByFragment();
+        mKindSortFragment = new KindSortFragment();
+        mPersonCenterFragment = new PersonCenterFragment();
 
-        mFragments = new ArrayList<>();
-        mFragments.add(mHomeFragment);
-        mFragments.add(mNearByFragment);
-        mFragments.add(mKindSortFragment);
-        mFragments.add(mPersonCenterFragment);
+        if (mFragments == null) {
+            mFragments = new ArrayList<>();
+            mFragments.add(mHomeFragment);
+            mFragments.add(mNearByFragment);
+            mFragments.add(mKindSortFragment);
+            mFragments.add(mPersonCenterFragment);
+        }
+        else {
+            mFragments.set(HOME_VIEW, mHomeFragment);
+            mFragments.set(NEAR_BY_VIEW, mNearByFragment);
+            mFragments.set(KIND_SORT_VIEW, mKindSortFragment);
+            mFragments.set(PERSON_VIEW, mPersonCenterFragment);
+        }
         //默认加载前两个Fragment，其中第一个展示，第二个隐藏
         getSupportFragmentManager().beginTransaction().add(R.id.content, mHomeFragment).add(R.id.content, mNearByFragment).hide(mNearByFragment).show(mHomeFragment).commit();
     }
@@ -220,12 +220,12 @@ public class MainActivity extends BaseActivity {
         if (mCurrentIndex == 4) {
             ft = getSupportFragmentManager().beginTransaction();
             mPublishMenu.setSelected(false);
-            mViews.get(PERSON_VIEW).setSelected(true);
-            mCurrentIndex = PERSON_VIEW;
-            if (!mFragments.get(PERSON_VIEW).isAdded()) {
-                ft.add(R.id.content, mFragments.get(PERSON_VIEW)).hide(mFragments.get(mOldIndex)).show(mFragments.get(PERSON_VIEW)).commit();
+            mViews.get(HOME_VIEW).setSelected(true);
+            mCurrentIndex = HOME_VIEW;
+            if (!mFragments.get(HOME_VIEW).isAdded()) {
+                ft.add(R.id.content, mFragments.get(HOME_VIEW)).hide(mFragments.get(mOldIndex)).show(mFragments.get(PERSON_VIEW)).commit();
             } else {
-                ft.hide(mFragments.get(mOldIndex)).show(mFragments.get(3)).commit();
+                ft.hide(mFragments.get(mOldIndex)).show(mFragments.get(HOME_VIEW)).commit();
             }
             mOldIndex = mCurrentIndex;
         }
@@ -304,4 +304,36 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+    /*防止fragment重叠*/
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (mHomeFragment == null && fragment instanceof HomeFragment)
+            mHomeFragment = (HomeFragment) fragment;
+        else if (mNearByFragment == null && fragment instanceof NearByFragment)
+            mNearByFragment = (NearByFragment) fragment;
+        else if (mKindSortFragment == null && fragment instanceof KindSortFragment)
+            mKindSortFragment = (KindSortFragment) fragment;
+        else if (mPersonCenterFragment == null && fragment instanceof PersonCenterFragment)
+            mPersonCenterFragment = (PersonCenterFragment) fragment;
+
+        if (mFragments == null) {
+            mFragments = new ArrayList<>();
+            mFragments.add(mHomeFragment);
+            mFragments.add(mNearByFragment);
+            mFragments.add(mKindSortFragment);
+            mFragments.add(mPersonCenterFragment);
+        }
+        else {
+            mFragments.set(HOME_VIEW, mHomeFragment);
+            mFragments.set(NEAR_BY_VIEW, mNearByFragment);
+            mFragments.set(KIND_SORT_VIEW, mKindSortFragment);
+            mFragments.set(PERSON_VIEW, mPersonCenterFragment);
+        }
+    }
+
+    /*防止fragment重叠*/
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
+    }
 }
