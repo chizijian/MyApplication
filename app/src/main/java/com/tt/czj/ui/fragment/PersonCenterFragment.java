@@ -298,8 +298,7 @@ public class PersonCenterFragment extends Fragment implements PersonCenterView,O
     @Override
     public void onResume() {
         super.onResume();
-        User user=BmobUser.getCurrentUser(mContext,User.class);
-        mPersonCenterPhoto.setImageUrl(user.getPhoto().getUrl(), TakePhotoUtil.getmImageLoader(this.getContext()));
+        initData();
     }
 }
 

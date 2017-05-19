@@ -84,6 +84,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityView{
     @Inject
     LoginActivityPresenter presenter;
 
+    private int preIndexPage;
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_login;
